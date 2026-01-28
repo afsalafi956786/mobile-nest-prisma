@@ -14,10 +14,42 @@ enum Role {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String
-  password  String
-  role      Role     @default(user)
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  name     String
+  password String
+  role     Role   @default(user)
+
+  branchId Int?
+  branch   Branch? @relation("BranchUsers", fields: [branchId], references: [id])
+
+  // User can be admin of a branch
+  adminOf Branch? @relation("BranchAdmin")
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// ============================
+// Branch
+// ============================
+
+model Branch {
+  id Int @id @default(autoincrement())
+
+  adminId Int  @unique
+  admin   User @relation("BranchAdmin", fields: [adminId], references: [id])
+
+  users User[] @relation("BranchUsers")
+
+  name    String  @unique
+  email   String  @unique
+  address String
+  contact String?
+  logo    String?
+  city    String
+  state   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }

@@ -126,7 +126,23 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   password: 'password',
   role: 'role',
-  createdAt: 'createdAt'
+  branchId: 'branchId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BranchScalarFieldEnum = {
+  id: 'id',
+  adminId: 'adminId',
+  name: 'name',
+  email: 'email',
+  address: 'address',
+  contact: 'contact',
+  logo: 'logo',
+  city: 'city',
+  state: 'state',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -138,13 +154,19 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
 exports.Role = exports.$Enums.Role = {
   admin: 'admin',
   user: 'user'
 };
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Branch: 'Branch'
 };
 
 /**

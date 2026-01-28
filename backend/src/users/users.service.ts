@@ -7,7 +7,7 @@ import {
 import { CreateAuthDto } from 'src/auth/dto/create-auth.dto';
 import { Role } from './user.types';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { SuccessResponseDto } from 'src/service/common.types';
+import { SuccessResponseDto } from 'src/common/service/common.types';
 import { LoginAuthDto } from 'src/auth/dto/login-auth.dts';
 import * as bcrypt from 'bcrypt';
 
