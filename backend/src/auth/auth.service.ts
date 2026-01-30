@@ -35,14 +35,15 @@ export class AuthService {
     success: boolean;
     message: string;
     statusCode: number;
-    token: string;
+    user: any;
   }> {
     const user = await this.userService.userLogin(loginAuthDto);
     const payload = { userId: user.id, email:user.email };
     const token = await this.jwtService.signAsync(payload);
+  const data = { ...user, token };
 
     return {
-      token:token,
+      user:data,
       success: true,
       message: 'User created successfully',
       statusCode: HttpStatus.CREATED,

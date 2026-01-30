@@ -25,7 +25,7 @@ export class AuthController {
   async login(
     @Body() loginAuthDto : LoginAuthDto):Promise<{
     success: boolean;
-    token: string;
+    user: any;
     message: string;
     statusCode: number;
     }>{

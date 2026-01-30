@@ -181,7 +181,7 @@ export default function Sidebar() {
                   title={!isOpen ? section.title : ""}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="text-text-secondary transition-colors duration-150">
+                    <div className="text-main-primary transition-colors duration-150">
                       {section.icon}
                     </div>
                     {showContent && (
@@ -194,7 +194,7 @@ export default function Sidebar() {
                   {showContent && expandedSections.includes(section.title) && (
                     <ChevronDown
                       size={16}
-                      className={`transition-transform duration-150 ease-out flex-shrink-0 ${
+                      className={`transition-transform text-main-primary  duration-150 ease-out flex-shrink-0 ${
                         expandedSections.includes(section.title)
                           ? "rotate-180"
                           : ""

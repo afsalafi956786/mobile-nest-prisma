@@ -33,7 +33,7 @@ export default function ThemeToggle() {
       onClick={() => setDark(!dark)}
       className="
         p-2 rounded-lg
-        text-text-secondary
+        text-main-primary 
         cursor-pointer
         hover:bg-black/10 dark:hover:bg-white/10
         hover:text-text-primary

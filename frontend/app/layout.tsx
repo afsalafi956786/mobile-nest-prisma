@@ -1,10 +1,8 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
-import "./globals.css"; // All animations are her
-import Sidebar from "@/components/UI/Sidebar";
-import { SidebarProvider } from "@/components/SidebarContext";
-import Navbar from "@/components/UI/Navbar";
-
+import "./globals.css";
+import toast, { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,17 +42,8 @@ export default function RootLayout({
           overflow-x-hidden
         `}
       >
-               <SidebarProvider>
-          <div className="flex h-screen">
-            <Sidebar />
-            <div className="flex-1 flex flex-col overflow-hidden">
-              <Navbar />
-              <main className="flex-1 overflow-auto p-4">
-                {children}
-              </main>
-            </div>
-          </div>
-        </SidebarProvider>
+        {children}
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );
