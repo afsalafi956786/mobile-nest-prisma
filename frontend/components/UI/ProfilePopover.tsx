@@ -1,43 +1,51 @@
 "use client";
 
-import { Fragment } from 'react';
-import { Popover, Transition } from '@headlessui/react';
-import { User, LogOut } from 'lucide-react';
-import Link from 'next/link';
+import { Fragment } from "react";
+import { Popover, Transition } from "@headlessui/react";
+import { User, LogOut } from "lucide-react";
+import Link from "next/link";
+import { apiFetch } from "@/service/api";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 // Define proper TypeScript types
 type MenuItemLink = {
   icon: React.ReactNode;
   label: string;
   href: string;
-  type?: 'link';
+  type?: "link";
 };
 
 type MenuItemButton = {
   icon: React.ReactNode;
   label: string;
   onClick: () => void;
-  type?: 'button';
+  type?: "button";
 };
 
 type MenuItem = MenuItemLink | MenuItemButton;
 
 export default function ProfilePopover() {
+  const router = useRouter();
+
+
   const menuItems: MenuItem[] = [
     {
-      type: 'link',
+      type: "link",
       icon: <User size={16} />,
       label: "Profile",
       href: "/profile", // Change to your profile route
     },
     {
-      type: 'button',
+      type: "button",
       icon: <LogOut size={16} />,
       label: "Logout",
-      onClick: () => {
-        console.log("Logging out...");
-        // Add your logout logic here
-        // Example: signOut(), redirect to login, etc.
+      onClick: async () => {
+        useAuthStore.getState().logout();
+        router.replace("/login");
+        router.refresh()
+        toast.success("Logged out successfully");
       },
     },
   ];
@@ -46,11 +54,11 @@ export default function ProfilePopover() {
     <Popover className="relative">
       {({ open, close }) => (
         <>
-          <Popover.Button 
+          <Popover.Button
             className={`
               p-2 rounded-md transition-all duration-200 ease-out 
               hover:bg-hover-bg hover:text-hover-text hover:scale-110
-              ${open ? 'bg-hover-bg text-hover-text' : ''}
+              ${open ? "bg-hover-bg text-hover-text" : ""}
             `}
           >
             <User size={18} className="text-main-primary " />
@@ -70,8 +78,8 @@ export default function ProfilePopover() {
                 <div className="py-2">
                   {menuItems.map((item, index) => {
                     // Type guard to check if it's a link
-                    const isLink = 'href' in item;
-                    
+                    const isLink = "href" in item;
+
                     if (isLink) {
                       return (
                         <Link
@@ -80,9 +88,7 @@ export default function ProfilePopover() {
                           onClick={() => close()}
                           className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-primary hover:bg-hover-bg transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg block"
                         >
-                          <div className="text-text-secondary">
-                            {item.icon}
-                          </div>
+                          <div className="text-text-secondary">{item.icon}</div>
                           <span>{item.label}</span>
                         </Link>
                       );
@@ -96,9 +102,7 @@ export default function ProfilePopover() {
                           }}
                           className="w-full cursor-pointer flex items-center gap-3 px-4 py-2.5 text-sm text-text-primary hover:bg-hover-bg transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg"
                         >
-                          <div className="text-text-secondary">
-                            {item.icon}
-                          </div>
+                          <div className="text-text-secondary">{item.icon}</div>
                           <span>{item.label}</span>
                         </button>
                       );

@@ -9,7 +9,6 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
-    private readonly jwtService: JwtService,
   ) {}
   async createAdmin(
     createAuthDto: CreateAuthDto,
@@ -38,12 +37,9 @@ export class AuthService {
     user: any;
   }> {
     const user = await this.userService.userLogin(loginAuthDto);
-    const payload = { userId: user.id, email:user.email };
-    const token = await this.jwtService.signAsync(payload);
-  const data = { ...user, token };
-
+    
     return {
-      user:data,
+      user:user,
       success: true,
       message: 'User created successfully',
       statusCode: HttpStatus.CREATED,

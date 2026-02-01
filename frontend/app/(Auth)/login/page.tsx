@@ -1,7 +1,7 @@
 // app/login/page.tsx
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -28,6 +28,22 @@ const schema = yup.object({
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+
+
+ useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await apiFetch.get("/auth/me"); // call backend to check cookie
+        useAuthStore.getState().setAuth(res.user); // set user in store if logged in
+        router.replace("/"); // redirect to dashboard
+      } catch (err) {
+        // not logged in, do nothing, stay on login page
+      }
+    };
+    checkAuth();
+  }, [router]);
+
+
   const {
     register,
     handleSubmit,
@@ -43,12 +59,11 @@ export default function LoginPage() {
 
   const  formSubmit = async (FormData : LoginFormData)=>{
     try{
-  const res = await apiFetch.post('/auth/login', FormData);
-    console.log(res,'data came');
-    localStorage.setItem('token', res.user.token);
+   await apiFetch.post('/auth/login', FormData)
+  const res = await apiFetch.get("/auth/me");
     useAuthStore.getState().setAuth(res.user);
     toast.success('Login successful');
-    router.push('/');
+    router.replace('/');
     }catch(error:any){
         toast.error(error?.message);
     }

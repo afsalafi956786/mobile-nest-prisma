@@ -1,20 +1,19 @@
 "use client";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "http://localhost:8000/api";
 async function request(
   method: string,
   endpoint: string,
   body?: any,
   options: RequestInit = {}
 ) {
-  const token = localStorage.getItem("token");
 
   const res = await fetch(`${BASE_URL}${endpoint}`, {
     method,
     cache: "no-store",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
     body: body ? JSON.stringify(body) : undefined,

@@ -10,7 +10,7 @@ export default function SettingsPopover() {
     {
       icon: <Building size={16} />,
       label: "Organisation",
-      href: "/settings/organisation", // Add your route here
+      href: "/organization", // Add your route here
     },
     {
       icon: <UserCog size={16} />,

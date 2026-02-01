@@ -11,12 +11,15 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useSidebar } from "../SidebarContext";
 
 interface MenuSection {
   title: string;
   icon: React.ReactNode;
-  items: {
+  href?: string;       
+  single?: boolean;     
+  items?: {
     label: string;
     href: string;
     badge?: string;
@@ -24,9 +27,12 @@ interface MenuSection {
 }
 
 const menuSections: MenuSection[] = [
+  //  Dashboard single click (no dropdown)
   {
     title: "Dashboard",
     icon: <LayoutDashboard size={20} />,
+    href: "/",          // added
+    single: true,       // added
     items: [
       { label: "Dashboard", href: "/" },
     ],
@@ -62,32 +68,49 @@ const menuSections: MenuSection[] = [
 ];
 
 export default function Sidebar() {
+  const pathname = usePathname(); //  for active highlight
   const { isOpen, isAnimating, isMobile, closeSidebar } = useSidebar();
-  const [expandedSections, setExpandedSections] = useState<string[]>(["Dashboard"]);
+
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const [showContent, setShowContent] = useState(isOpen);
+
   const sidebarRef = useRef<HTMLDivElement>(null);
+
+
 
   const toggleSection = (title: string) => {
     setExpandedSections((prev) => {
-      // If clicking on already open section, close it
       if (prev.includes(title)) {
         return prev.filter((s) => s !== title);
       }
-      // Otherwise, close all other sections and open only this one
       return [title];
     });
   };
+
+
 
   // Handle smooth content appearance/disappearance
   useEffect(() => {
     if (isOpen) {
       setShowContent(true);
     } else {
-      // Delay hiding content until collapse animation is almost done
       const timer = setTimeout(() => setShowContent(false), isMobile ? 200 : 300);
       return () => clearTimeout(timer);
     }
   }, [isOpen, isMobile]);
+
+
+
+  // Auto expand section based on current route
+  useEffect(() => {
+    menuSections.forEach((section) => {
+      if (section.items?.some((item) => item.href === pathname)) {
+        setExpandedSections([section.title]);
+      }
+    });
+  }, [pathname]);
+
+
 
   // Close sidebar when clicking a link on mobile
   const handleLinkClick = () => {
@@ -96,10 +119,13 @@ export default function Sidebar() {
     }
   };
 
-  // Don't render sidebar on mobile when closed
+
+
   if (isMobile && !isOpen) {
     return null;
   }
+
+
 
   return (
     <>
@@ -128,16 +154,18 @@ export default function Sidebar() {
             : 'width 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
+
         {/* Close button for mobile */}
         {isMobile && isOpen && (
           <button
             onClick={closeSidebar}
-            className="absolute right-4 top-4 p-2  cursor-pointer rounded-full bg-hover-bg hover:bg-hover-bg/200
- transition-colors z-10"
+            className="absolute right-4 top-4 p-2  cursor-pointer rounded-full bg-hover-bg hover:bg-hover-bg/200 transition-colors z-10"
           >
             <X size={20} />
           </button>
         )}
+
+
 
         {/* Header with Brand */}
         <div className="flex bg-navbar items-center justify-between px-6 border-b border-border h-14 flex-shrink-0">
@@ -159,80 +187,105 @@ export default function Sidebar() {
           )}
         </div>
 
+
+
         {/* Inner Rounded Container */}
         <div className="flex-1 flex flex-col mx-2 mb-2 mt-2 bg-sidebar rounded-3xl shadow-md overflow-hidden">
-          {/* Main Navigation */}
-          <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-4">
-            {menuSections.map((section, index) => (
-              <div key={section.title} className="space-y-2">
-                {/* Section Title with Icon */}
-                <button
-                  onClick={() => toggleSection(section.title)}
-                  className={`
-                    w-full flex items-center gap-3 px-4 py-3 
-                    text-sm font-medium tracking-wide 
-                    transition-all duration-150 ease-out
-                    text-text-secondary hover:text-text-primary
-                    ${isOpen ? "justify-between" : "justify-center"}
-                    rounded-2xl hover:bg-hover-bg hover:text-hover-text
-                    transition-colors duration-150
-                  `}
-                 
-                  title={!isOpen ? section.title : ""}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="text-main-primary transition-colors duration-150">
-                      {section.icon}
-                    </div>
-                    {showContent && (
-                      <span >
-                        {section.title}
-                      </span>
-                    )}
-                  </div>
-                  
-                  {showContent && expandedSections.includes(section.title) && (
-                    <ChevronDown
-                      size={16}
-                      className={`transition-transform text-main-primary  duration-150 ease-out flex-shrink-0 ${
-                        expandedSections.includes(section.title)
-                          ? "rotate-180"
-                          : ""
-                      }`}
-                    />
-                  )}
-                </button>
 
-                {/* Menu Items */}
-                {showContent && expandedSections.includes(section.title) && (
-                  <div className="space-y-1 ml-11 stagger-children">
-                    {section.items.map((item, itemIndex) => (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        onClick={handleLinkClick}
-                        className={`
-                          group relative flex items-center justify-between
-                          px-4 py-2.5 rounded-xl
-                          transition-colors duration-150 ease-out
-                          text-sm text-text-primary
-                          hover:bg-hover-bg hover:text-hover-text
-                          hover:translate-x-1
-                        `}
-                       
-                      >
-                        <span>{item.label}</span>
-                        {item.badge && (
-                          <span className="ml-2 px-2 py-1 text-xs font-semibold rounded-full bg-blue-600 text-white animate-pulse-gentle">
-                            {item.badge}
-                          </span>
-                        )}
-                      </Link>
-                    ))}
-                  </div>
+          <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-4">
+
+            {menuSections.map((section) => (
+              <div key={section.title} className="space-y-2">
+
+                {/* ================= SINGLE (Dashboard) ================= */}
+                {section.single ? (
+                  <Link
+                    href={section.href!}
+                    onClick={handleLinkClick}
+                    className={`
+                      w-full flex items-center gap-3 px-4 py-3
+                      text-sm font-medium tracking-wide rounded-2xl
+                      transition-all duration-150
+                      ${pathname === section.href
+                        ? "bg-hover-bg text-hover-text"
+                        : "text-text-secondary hover:bg-hover-bg"}
+                      ${isOpen ? "justify-start" : "justify-center"}
+                    `}
+                  >
+                    {section.icon}
+                    {showContent && <span>{section.title}</span>}
+                  </Link>
+                ) : (
+
+
+
+                <>
+                  {/* Section Title */}
+                  <button
+                    onClick={() => toggleSection(section.title)}
+                    className={`
+                      w-full flex items-center gap-3 px-4 py-3 
+                      text-sm font-medium tracking-wide 
+                      transition-all duration-150 ease-out
+                      text-text-secondary hover:text-text-primary
+                      ${isOpen ? "justify-between" : "justify-center"}
+                      rounded-2xl hover:bg-hover-bg
+                    `}
+                    title={!isOpen ? section.title : ""}
+                  >
+                    <div className="flex items-center gap-3">
+                      {section.icon}
+                      {showContent && <span>{section.title}</span>}
+                    </div>
+
+                    {showContent && (
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform ${
+                          expandedSections.includes(section.title)
+                            ? "rotate-180"
+                            : ""
+                        }`}
+                      />
+                    )}
+                  </button>
+
+
+
+                  {/* Menu Items */}
+                  {showContent && expandedSections.includes(section.title) && (
+                    <div className="space-y-1 ml-11">
+                      {section.items?.map((item) => (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          onClick={handleLinkClick}
+                          className={`
+                            flex items-center justify-between
+                            px-4 py-2.5 rounded-xl
+                            transition-colors duration-150
+                            ${pathname === item.href
+                              ? "bg-hover-bg text-hover-text"
+                              : "text-text-primary hover:bg-hover-bg"}
+                          `}
+                        >
+                          <span>{item.label}</span>
+
+                          {item.badge && (
+                            <span className="ml-2 px-2 py-1 text-xs font-semibold rounded-full bg-blue-600 text-white">
+                              {item.badge}
+                            </span>
+                          )}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </>
                 )}
+
               </div>
             ))}
+
           </nav>
         </div>
       </aside>
