@@ -168,7 +168,7 @@ export default function Sidebar() {
 
 
         {/* Header with Brand */}
-        <div className="flex bg-navbar items-center justify-between px-6 border-b border-border h-14 flex-shrink-0">
+        <div className="flex bg-navbar items-center justify-between px-6 border-b border-border h-16 flex-shrink-0">
           {showContent ? (
             <div className="overflow-hidden">
               <h1 className="text-sm font-bold text-text-primary whitespace-nowrap ">

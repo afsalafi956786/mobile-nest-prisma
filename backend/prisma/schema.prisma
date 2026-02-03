@@ -24,7 +24,7 @@ model User {
    branch    Branch?  @relation("BranchUsers", fields: [branchId], references: [id])
 
      // User can be admin of a branch
-  adminOf   Branch?  @relation("BranchAdmin")
+  adminOf   Branch[]  @relation("BranchAdmin")
 
   createdAt DateTime @default(now())
  updatedAt DateTime @default(now()) @updatedAt
@@ -38,13 +38,13 @@ model User {
 model Branch {
   id        Int      @id @default(autoincrement())
 
-   adminId   Int @unique
-   admin     User     @relation("BranchAdmin", fields: [adminId], references: [id])
+  adminId   Int
+  admin     User     @relation("BranchAdmin", fields: [adminId], references: [id])
 
- users     User[]   @relation("BranchUsers")
+  users     User[]   @relation("BranchUsers")
 
   name      String   @unique
-  email     String   @unique
+  email     String   
   address   String
   contact   String?
   logo      String?
@@ -52,6 +52,7 @@ model Branch {
   state     String
 
   createdAt DateTime @default(now())
- updatedAt DateTime @default(now()) @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 }
+
 

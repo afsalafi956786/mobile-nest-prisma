@@ -966,6 +966,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type UserCountOutputType
+   */
+
+  export type UserCountOutputType = {
+    adminOf: number
+  }
+
+  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    adminOf?: boolean | UserCountOutputTypeCountAdminOfArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdminOfArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchWhereInput
+  }
+
+
+  /**
    * Count Type BranchCountOutputType
    */
 
@@ -1228,6 +1259,7 @@ export namespace Prisma {
     updatedAt?: boolean
     branch?: boolean | User$branchArgs<ExtArgs>
     adminOf?: boolean | User$adminOfArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1269,6 +1301,7 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | User$branchArgs<ExtArgs>
     adminOf?: boolean | User$adminOfArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | User$branchArgs<ExtArgs>
@@ -1281,7 +1314,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       branch: Prisma.$BranchPayload<ExtArgs> | null
-      adminOf: Prisma.$BranchPayload<ExtArgs> | null
+      adminOf: Prisma.$BranchPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1687,7 +1720,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     branch<T extends User$branchArgs<ExtArgs> = {}>(args?: Subset<T, User$branchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    adminOf<T extends User$adminOfArgs<ExtArgs> = {}>(args?: Subset<T, User$adminOfArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    adminOf<T extends User$adminOfArgs<ExtArgs> = {}>(args?: Subset<T, User$adminOfArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2156,6 +2189,11 @@ export namespace Prisma {
      */
     include?: BranchInclude<ExtArgs> | null
     where?: BranchWhereInput
+    orderBy?: BranchOrderByWithRelationInput | BranchOrderByWithRelationInput[]
+    cursor?: BranchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchScalarFieldEnum | BranchScalarFieldEnum[]
   }
 
   /**
@@ -3541,7 +3579,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     branch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
-    adminOf?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
+    adminOf?: BranchListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -3554,7 +3592,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     branch?: BranchOrderByWithRelationInput
-    adminOf?: BranchOrderByWithRelationInput
+    adminOf?: BranchOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -3570,7 +3608,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     branch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
-    adminOf?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
+    adminOf?: BranchListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -3640,12 +3678,12 @@ export namespace Prisma {
 
   export type BranchWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    adminId?: number
     name?: string
-    email?: string
     AND?: BranchWhereInput | BranchWhereInput[]
     OR?: BranchWhereInput[]
     NOT?: BranchWhereInput | BranchWhereInput[]
+    adminId?: IntFilter<"Branch"> | number
+    email?: StringFilter<"Branch"> | string
     address?: StringFilter<"Branch"> | string
     contact?: StringNullableFilter<"Branch"> | string | null
     logo?: StringNullableFilter<"Branch"> | string | null
@@ -3655,7 +3693,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
     admin?: XOR<UserScalarRelationFilter, UserWhereInput>
     users?: UserListRelationFilter
-  }, "id" | "adminId" | "name" | "email">
+  }, "id" | "name">
 
   export type BranchOrderByWithAggregationInput = {
     id?: SortOrder
@@ -3701,7 +3739,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branch?: BranchCreateNestedOneWithoutUsersInput
-    adminOf?: BranchCreateNestedOneWithoutAdminInput
+    adminOf?: BranchCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -3713,7 +3751,7 @@ export namespace Prisma {
     branchId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    adminOf?: BranchUncheckedCreateNestedOneWithoutAdminInput
+    adminOf?: BranchUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserUpdateInput = {
@@ -3724,7 +3762,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneWithoutUsersNestedInput
-    adminOf?: BranchUpdateOneWithoutAdminNestedInput
+    adminOf?: BranchUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -3736,7 +3774,7 @@ export namespace Prisma {
     branchId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    adminOf?: BranchUncheckedUpdateOneWithoutAdminNestedInput
+    adminOf?: BranchUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -3928,9 +3966,19 @@ export namespace Prisma {
     isNot?: BranchWhereInput | null
   }
 
+  export type BranchListRelationFilter = {
+    every?: BranchWhereInput
+    some?: BranchWhereInput
+    none?: BranchWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type BranchOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -4156,16 +4204,18 @@ export namespace Prisma {
     connect?: BranchWhereUniqueInput
   }
 
-  export type BranchCreateNestedOneWithoutAdminInput = {
-    create?: XOR<BranchCreateWithoutAdminInput, BranchUncheckedCreateWithoutAdminInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutAdminInput
-    connect?: BranchWhereUniqueInput
+  export type BranchCreateNestedManyWithoutAdminInput = {
+    create?: XOR<BranchCreateWithoutAdminInput, BranchUncheckedCreateWithoutAdminInput> | BranchCreateWithoutAdminInput[] | BranchUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutAdminInput | BranchCreateOrConnectWithoutAdminInput[]
+    createMany?: BranchCreateManyAdminInputEnvelope
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
   }
 
-  export type BranchUncheckedCreateNestedOneWithoutAdminInput = {
-    create?: XOR<BranchCreateWithoutAdminInput, BranchUncheckedCreateWithoutAdminInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutAdminInput
-    connect?: BranchWhereUniqueInput
+  export type BranchUncheckedCreateNestedManyWithoutAdminInput = {
+    create?: XOR<BranchCreateWithoutAdminInput, BranchUncheckedCreateWithoutAdminInput> | BranchCreateWithoutAdminInput[] | BranchUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutAdminInput | BranchCreateOrConnectWithoutAdminInput[]
+    createMany?: BranchCreateManyAdminInputEnvelope
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -4190,14 +4240,18 @@ export namespace Prisma {
     update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutUsersInput, BranchUpdateWithoutUsersInput>, BranchUncheckedUpdateWithoutUsersInput>
   }
 
-  export type BranchUpdateOneWithoutAdminNestedInput = {
-    create?: XOR<BranchCreateWithoutAdminInput, BranchUncheckedCreateWithoutAdminInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutAdminInput
-    upsert?: BranchUpsertWithoutAdminInput
-    disconnect?: BranchWhereInput | boolean
-    delete?: BranchWhereInput | boolean
-    connect?: BranchWhereUniqueInput
-    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutAdminInput, BranchUpdateWithoutAdminInput>, BranchUncheckedUpdateWithoutAdminInput>
+  export type BranchUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<BranchCreateWithoutAdminInput, BranchUncheckedCreateWithoutAdminInput> | BranchCreateWithoutAdminInput[] | BranchUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutAdminInput | BranchCreateOrConnectWithoutAdminInput[]
+    upsert?: BranchUpsertWithWhereUniqueWithoutAdminInput | BranchUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: BranchCreateManyAdminInputEnvelope
+    set?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    disconnect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    delete?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    update?: BranchUpdateWithWhereUniqueWithoutAdminInput | BranchUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: BranchUpdateManyWithWhereWithoutAdminInput | BranchUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: BranchScalarWhereInput | BranchScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -4216,14 +4270,18 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type BranchUncheckedUpdateOneWithoutAdminNestedInput = {
-    create?: XOR<BranchCreateWithoutAdminInput, BranchUncheckedCreateWithoutAdminInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutAdminInput
-    upsert?: BranchUpsertWithoutAdminInput
-    disconnect?: BranchWhereInput | boolean
-    delete?: BranchWhereInput | boolean
-    connect?: BranchWhereUniqueInput
-    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutAdminInput, BranchUpdateWithoutAdminInput>, BranchUncheckedUpdateWithoutAdminInput>
+  export type BranchUncheckedUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<BranchCreateWithoutAdminInput, BranchUncheckedCreateWithoutAdminInput> | BranchCreateWithoutAdminInput[] | BranchUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutAdminInput | BranchCreateOrConnectWithoutAdminInput[]
+    upsert?: BranchUpsertWithWhereUniqueWithoutAdminInput | BranchUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: BranchCreateManyAdminInputEnvelope
+    set?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    disconnect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    delete?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    update?: BranchUpdateWithWhereUniqueWithoutAdminInput | BranchUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: BranchUpdateManyWithWhereWithoutAdminInput | BranchUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: BranchScalarWhereInput | BranchScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAdminOfInput = {
@@ -4530,6 +4588,11 @@ export namespace Prisma {
     create: XOR<BranchCreateWithoutAdminInput, BranchUncheckedCreateWithoutAdminInput>
   }
 
+  export type BranchCreateManyAdminInputEnvelope = {
+    data: BranchCreateManyAdminInput | BranchCreateManyAdminInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BranchUpsertWithoutUsersInput = {
     update: XOR<BranchUpdateWithoutUsersInput, BranchUncheckedUpdateWithoutUsersInput>
     create: XOR<BranchCreateWithoutUsersInput, BranchUncheckedCreateWithoutUsersInput>
@@ -4568,42 +4631,37 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BranchUpsertWithoutAdminInput = {
+  export type BranchUpsertWithWhereUniqueWithoutAdminInput = {
+    where: BranchWhereUniqueInput
     update: XOR<BranchUpdateWithoutAdminInput, BranchUncheckedUpdateWithoutAdminInput>
     create: XOR<BranchCreateWithoutAdminInput, BranchUncheckedCreateWithoutAdminInput>
-    where?: BranchWhereInput
   }
 
-  export type BranchUpdateToOneWithWhereWithoutAdminInput = {
-    where?: BranchWhereInput
+  export type BranchUpdateWithWhereUniqueWithoutAdminInput = {
+    where: BranchWhereUniqueInput
     data: XOR<BranchUpdateWithoutAdminInput, BranchUncheckedUpdateWithoutAdminInput>
   }
 
-  export type BranchUpdateWithoutAdminInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    contact?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: StringFieldUpdateOperationsInput | string
-    state?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    users?: UserUpdateManyWithoutBranchNestedInput
+  export type BranchUpdateManyWithWhereWithoutAdminInput = {
+    where: BranchScalarWhereInput
+    data: XOR<BranchUpdateManyMutationInput, BranchUncheckedUpdateManyWithoutAdminInput>
   }
 
-  export type BranchUncheckedUpdateWithoutAdminInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    contact?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: StringFieldUpdateOperationsInput | string
-    state?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    users?: UserUncheckedUpdateManyWithoutBranchNestedInput
+  export type BranchScalarWhereInput = {
+    AND?: BranchScalarWhereInput | BranchScalarWhereInput[]
+    OR?: BranchScalarWhereInput[]
+    NOT?: BranchScalarWhereInput | BranchScalarWhereInput[]
+    id?: IntFilter<"Branch"> | number
+    adminId?: IntFilter<"Branch"> | number
+    name?: StringFilter<"Branch"> | string
+    email?: StringFilter<"Branch"> | string
+    address?: StringFilter<"Branch"> | string
+    contact?: StringNullableFilter<"Branch"> | string | null
+    logo?: StringNullableFilter<"Branch"> | string | null
+    city?: StringFilter<"Branch"> | string
+    state?: StringFilter<"Branch"> | string
+    createdAt?: DateTimeFilter<"Branch"> | Date | string
+    updatedAt?: DateTimeFilter<"Branch"> | Date | string
   }
 
   export type UserCreateWithoutAdminOfInput = {
@@ -4639,7 +4697,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    adminOf?: BranchCreateNestedOneWithoutAdminInput
+    adminOf?: BranchCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutBranchInput = {
@@ -4650,7 +4708,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    adminOf?: BranchUncheckedCreateNestedOneWithoutAdminInput
+    adminOf?: BranchUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutBranchInput = {
@@ -4725,6 +4783,59 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
 
+  export type BranchCreateManyAdminInput = {
+    id?: number
+    name: string
+    email: string
+    address: string
+    contact?: string | null
+    logo?: string | null
+    city: string
+    state: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchUpdateWithoutAdminInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutAdminInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateManyWithoutAdminInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateManyBranchInput = {
     id?: number
     email: string
@@ -4742,7 +4853,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    adminOf?: BranchUpdateOneWithoutAdminNestedInput
+    adminOf?: BranchUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBranchInput = {
@@ -4753,7 +4864,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    adminOf?: BranchUncheckedUpdateOneWithoutAdminNestedInput
+    adminOf?: BranchUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutBranchInput = {

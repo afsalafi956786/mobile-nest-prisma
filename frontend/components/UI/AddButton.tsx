@@ -13,12 +13,12 @@ const AddButton = ({ logo, btnHeading, onClick }: Props) => {
     <div className="flex flex-col items-center">
       <button
         onClick={onClick}
-        className="bg-main-primary rounded-md p-4 cursor-pointer hover:opacity-90 transition"
+        className="bg-main-primary rounded-md p-3 cursor-pointer hover:bg-main-hover-primary transition"
       >
         <span className="text-white text-lg font-bold">{logo}</span>
       </button>
 
-      <p className="text-sm font-semibold text-main-primary mt-1">
+      <p className="text-sm font-bold text-main-primary mt-1">
         {btnHeading}
       </p>
     </div>

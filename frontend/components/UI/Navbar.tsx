@@ -11,7 +11,7 @@ const Navbar = () => {
   const { toggleSidebar, isOpen } = useSidebar();
 
   return (
-    <header className="h-14 flex items-center justify-between px-4 bg-navbar border-b border-border transition-all duration-300 ease-out sticky top-0 z-40">
+    <header className="h-16 flex items-center justify-between px-4 bg-navbar border-b border-border transition-all duration-300 ease-out sticky top-0 z-40">
       <div className="flex items-center gap-4">
         <button
           onClick={toggleSidebar}
