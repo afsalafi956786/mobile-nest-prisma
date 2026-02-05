@@ -18,19 +18,30 @@ import { formatDate } from "@/helper/date";
 import { Organization } from "@/types/organization.types";
 import Image from "next/image";
 import noImage from "@/public/noImage.png";
+import { useTableQueryParams } from "@/hooks/useTablequeryParams";
+import { useDebounce } from "@/hooks/useDebounce";
 
 const OrganizationPage = () => {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState("");
+
+  const {
+  page,
+  limit,
+  search,
+  setPage,
+  setLimit,
+  setSearch,
+} = useTableQueryParams();
+
+const debouncedSearch = useDebounce(search, 500);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingOrg, setEditingOrg] = useState<Organization | null>(null);
   const queryClient = useQueryClient();
 
   //  React Query magic
   const { data, isLoading, error } = useQuery({
-    queryKey: ["organizations", page, limit, search],
-    queryFn: () => getOrganizations({ page, limit, search }),
+    queryKey: ["organizations", page, limit, debouncedSearch],
+    queryFn: () => getOrganizations({ page, limit, search : debouncedSearch }),
 
     // v5 replacement for keepPreviousData
     staleTime: 1000 * 30, // 30s cache

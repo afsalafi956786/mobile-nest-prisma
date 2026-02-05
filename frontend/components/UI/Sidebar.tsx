@@ -3,12 +3,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   LayoutDashboard,
-  PieChart,
-  Layers,
-  Database,
+  House ,
   ChevronDown,
-  HelpCircle,
+  Columns3Cog ,
+  ChartColumnDecreasing ,
+  ChartNoAxesCombined ,
+  Users ,
   X,
+  Warehouse ,
+  ShoppingCart ,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -30,7 +33,7 @@ const menuSections: MenuSection[] = [
   //  Dashboard single click (no dropdown)
   {
     title: "Dashboard",
-    icon: <LayoutDashboard size={20} />,
+    icon: <House  size={20} />,
     href: "/",          // added
     single: true,       // added
     items: [
@@ -38,17 +41,18 @@ const menuSections: MenuSection[] = [
     ],
   },
   {
-    title: "Reports",
-    icon: <PieChart size={20} />,
+    title: "Team",
+    icon: <Users  size={20} />,
     items: [
-      { label: "Balthasar", href: "/reports/balthasar" },
-      { label: "Refetch", href: "/reports/refetch" },
-      { label: "Detailed", href: "/reports/detailed" },
+      { label: "Department", href: "/reports/department" },
+      { label: "Position", href: "/reports/position" },
+      { label: "Employee", href: "/reports/employee" },
+       { label: "User", href: "/reports/user" },
     ],
   },
   {
-    title: "Pages",
-    icon: <Layers size={20} />,
+    title: "Service",
+    icon: <Columns3Cog size={20} />,
     items: [
       { label: "Pages", href: "/pages", badge: "5" },
       { label: "Applications", href: "/applications", badge: "3" },
@@ -57,12 +61,40 @@ const menuSections: MenuSection[] = [
     ],
   },
   {
-    title: "Data",
-    icon: <Database size={20} />,
+    title: "Sale",
+    icon: <ChartNoAxesCombined   size={20} />,
     items: [
       { label: "Tables", href: "/tables" },
       { label: "Components", href: "/components", badge: "2" },
       { label: "Changelog", href: "/changelog" },
+    ],
+  },
+   {
+    title: "Purchase",
+    icon: <ShoppingCart  size={20} />,
+    items: [
+      { label: "Tables", href: "/tables" },
+      { label: "Components", href: "/components", badge: "2" },
+      { label: "Changelog", href: "/changelog" },
+    ],
+  },
+   {
+    title: "Inventory",
+    icon: <Warehouse  size={20} />,
+    items: [
+      { label: "Cateogry", href: "/inventory/category" },
+      { label: "Unit", href: "/inventory/unit", badge: "2" },
+      { label: "Stock", href: "/inventory/stock" },
+    ],
+  },
+     {
+    title: "Report",
+    icon: <ChartColumnDecreasing size={20} />,
+    items: [
+      { label: "Sales Report", href: "/sales-report" },
+      { label: "Purchase Report", href: "/purchase-report", badge: "2" },
+      { label: "Inventory Report", href: "/inventory-report" },
+      { label: "Finance Report", href: "/finance-report" },
     ],
   },
 ];

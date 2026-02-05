@@ -59,12 +59,14 @@ export class BranchController {
     @Req() req: AuthRequest,
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
+    @Query('search') search?: string,
   ): Promise<successFetchReponseDto> {
     const userId = Number(req.user.userId);
     return this.branchService.getAllBranches(
       userId,
       Number(page),
       Number(limit),
+      search,
     );
   }
 

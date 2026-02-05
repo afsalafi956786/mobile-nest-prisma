@@ -16,6 +16,8 @@ import {
 } from 'src/common/service/common.types';
 import { UpdateBranchDto } from './dto/update-branch.dto';
 import { Branch } from 'src/generated/prisma';
+import {Prisma } from 'src/generated/prisma';
+
 
 @Injectable()
 export class BranchService {
@@ -105,62 +107,75 @@ export class BranchService {
     };
   }
 
-  async getAllBranches(
-    userId: number,
-    page = 1,
-    limit = 10,
-  ): Promise<successFetchReponseDto> {
-    const user = await this.userHelperService.getUserOrThrow(userId);
+async getAllBranches(
+  userId: number,
+  page = 1,
+  limit = 10,
+  search?: string,
+): Promise<successFetchReponseDto> {
 
-    const skip = (page - 1) * limit;
+  const user = await this.userHelperService.getUserOrThrow(userId);
 
-    let branches: Branch[] = [];
-    let totalCount = 0;
+  const skip = (page - 1) * limit;
 
-    if (user.role === Role.Admin) {
-      // Admin → multiple branches
-      [branches, totalCount] = await Promise.all([
-        this.prisma.branch.findMany({
-          where: {
-            adminId: user.id,
-          },
-          skip,
-          take: limit,
-          orderBy: {
-            createdAt: 'desc',
-          },
-        }),
-        this.prisma.branch.count({
-          where: {
-            adminId: user.id,
-          },
-        }),
-      ]);
-    } else if (user.role === Role.user) {
-      const branch = user.branchId
-        ? await this.prisma.branch.findUnique({ where: { id: user.branchId } })
-        : null;
+  let branches: Branch[] = [];
+  let totalCount = 0;
 
-      branches = branch ? [branch] : [];
-      totalCount = branches.length;
-    } else {
-      throw new ForbiddenException('Invalid role');
-    }
 
-    const totalPages = Math.ceil(totalCount / limit);
+if (user.role === Role.Admin) {
 
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      data: branches,
-      pagination: {
-        totalItems: totalCount,
-        totalPages,
-        currentPage: page,
-        limit,
-      },
-    };
+ const whereCondition: Prisma.BranchWhereInput = {
+  adminId: user.id,
+};
+
+  if (search) {
+    whereCondition.OR = [
+      { name: { contains: search, mode: 'insensitive' } },
+      { city: { contains: search, mode: 'insensitive' } },
+    ];
   }
+
+  [branches, totalCount] = await Promise.all([
+    this.prisma.branch.findMany({
+      where: whereCondition,
+      skip,
+      take: limit,
+      orderBy: { createdAt: 'desc' },
+    }),
+    this.prisma.branch.count({
+      where: whereCondition,
+    }),
+  ]);
+}
+
+  else if (user.role === Role.user) {
+    const branch = user.branchId
+      ? await this.prisma.branch.findUnique({ where: { id: user.branchId } })
+      : null;
+
+    branches = branch ? [branch] : [];
+    totalCount = branches.length;
+  }
+
+  else {
+    throw new ForbiddenException('Invalid role');
+  }
+
+  const totalPages = Math.ceil(totalCount / limit);
+
+  return {
+    success: true,
+    statusCode: HttpStatus.OK,
+    data: branches,
+    pagination: {
+      totalItems: totalCount,
+      totalPages,
+      currentPage: page,
+      limit,
+    },
+  };
+}
+
 
   async deleteBranch(
     userId: number, // usually numeric in PostgreSQL
