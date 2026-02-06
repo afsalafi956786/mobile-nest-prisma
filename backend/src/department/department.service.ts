@@ -253,9 +253,9 @@ export class DepartmentService {
       statusCode: HttpStatus.OK,
     };
   }
-  
 
-  async deleteBranch(
+
+  async deleteDepartment(
     userId: number,
     departmentId: number,
   ): Promise<SuccessResponseDto> {

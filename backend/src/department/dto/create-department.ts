@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString, IsArray, ArrayMinSize, IsInt } from "class-validator";
+import { IsNotEmpty, IsString, IsArray, ArrayMinSize, IsInt, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
 
 export class CreateDepartmentDto {
@@ -13,10 +13,10 @@ export class CreateDepartmentDto {
     description: 'Array of branch IDs',
     type: [Number] 
   })
+
+   @IsOptional()
   @IsArray()
-  @ArrayMinSize(1, { message: 'At least one branch ID is required' })
   @IsInt({ each: true })
   @Type(() => Number)
-  @IsNotEmpty()
   branchIds: number[];
 }
