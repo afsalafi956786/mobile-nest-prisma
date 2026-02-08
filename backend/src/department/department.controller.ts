@@ -29,7 +29,7 @@ export class DepartmentController {
 
   @UseGuards(AuthGuard)
   @Post()
-  @ApiOperation({ summary: 'Create Branch' })
+  @ApiOperation({ summary: 'Create Department' })
   @ApiBody({ type: CreateBranchDto })
   async create(
     @Req() req: AuthRequest,
@@ -90,3 +90,4 @@ export class DepartmentController {
     return this.departmentService.deleteDepartment(userId, departmentId);
   }
 }
+

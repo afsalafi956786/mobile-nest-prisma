@@ -28,3 +28,7 @@ export const updateOrganization = async (id:number, data:any)=>{
 export const deleteOrganization = async (id:number)=>{
    return apiFetch.delete(`/branch/${id}`);
 }
+
+export const getUserBranch = async ()=>{
+   return apiFetch.get("/branch/list");
+}

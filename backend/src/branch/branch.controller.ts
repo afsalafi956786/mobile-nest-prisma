@@ -40,11 +40,21 @@ export class BranchController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('/list')
+  @ApiOperation({ summary: 'Get All Branches without pagination' })
+  async getUserBranch(
+    @Req() req: AuthRequest,
+  ): Promise<successFetchReponseDto> {
+    const userId = Number(req.user.userId);
+    return this.branchService.getAllUserBranches(userId);
+  }
+
+  @UseGuards(AuthGuard)
   @Put(':branchId')
   @ApiOperation({ summary: 'Update Branch' })
   @ApiBody({ type: UpdateBranchDto })
   async update(
-    @Param('branchId',ParseIntPipe) branchId: number,
+    @Param('branchId', ParseIntPipe) branchId: number,
     @Req() req: AuthRequest,
     @Body() udpateBranchDto: UpdateBranchDto,
   ): Promise<SuccessResponseDto> {
@@ -75,7 +85,7 @@ export class BranchController {
   @ApiOperation({ summary: 'Delete Branch' })
   async delete(
     @Req() req: AuthRequest,
-    @Param('branchId',ParseIntPipe) branchId: number,
+    @Param('branchId', ParseIntPipe) branchId: number,
   ): Promise<SuccessResponseDto> {
     const userId = Number(req.user.userId);
     return this.branchService.deleteBranch(userId, branchId);
@@ -86,9 +96,10 @@ export class BranchController {
   @ApiOperation({ summary: 'get one  Branch' })
   async getOneBranch(
     @Req() req: AuthRequest,
-    @Param('branchId',ParseIntPipe) branchId: number,
+    @Param('branchId', ParseIntPipe) branchId: number,
   ): Promise<SuccessObjectResponseDto> {
     const userId = Number(req.user.userId);
     return this.branchService.getOneBranch(userId, branchId);
   }
+
 }

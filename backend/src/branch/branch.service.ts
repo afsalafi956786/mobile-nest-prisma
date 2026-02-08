@@ -228,4 +228,52 @@ if (user.role === Role.Admin) {
       data: branch,
     };
   }
+
+
+async getAllUserBranches(
+  userId: number,
+): Promise<successFetchReponseDto> {
+  const user = await this.userHelperService.getUserOrThrow(userId);
+
+  
+
+  let branches: Branch[] = [];
+
+  if (user.role === Role.Admin) {
+    branches = await this.prisma.branch.findMany({
+      where: { adminId: user.id },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  else if (user.role === Role.user) {
+    if (!user.branchId) return {
+      success: true,
+      statusCode: HttpStatus.OK,
+      data: [],
+    };
+
+    const branch = await this.prisma.branch.findUnique({
+      where: { id: user.branchId },
+    });
+
+    branches = branch ? [branch] : [];
+  }
+
+  else {
+    throw new ForbiddenException('Invalid role');
+  }
+  return {
+    success: true,
+    statusCode: HttpStatus.OK,
+    data: branches,
+  };
 }
+
+
+
+}
+
+
+
+
