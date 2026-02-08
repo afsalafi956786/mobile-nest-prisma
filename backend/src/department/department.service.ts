@@ -30,6 +30,10 @@ export class DepartmentService {
 
     let branchIds: number[] = [];
 
+    console.log(dto.branchIds, 'branch ids');
+    console.log(dto.departments,'departments');
+    console.log(dto,'dtop')
+
     //  If branchIds provided → validate & use
     if (dto.branchIds && dto.branchIds.length > 0) {
       const count = await this.prisma.branch.count({
@@ -65,32 +69,41 @@ export class DepartmentService {
       throw new BadRequestException('No branches available to assign');
     }
 
+     const uniqueDepartments = [...new Set(dto.departments)];
+
     // check duplicate department inside same branches
-    const existing = await this.prisma.department.findFirst({
+    const existing = await this.prisma.department.findMany({
       where: {
-        dept_name: dto.dept_name,
+        dept_name:  { in: uniqueDepartments },
         branches: {
           some: {
             id: { in: branchIds },
           },
         },
       },
+      select: { dept_name: true },
     });
 
-    if (existing) {
-      throw new BadRequestException(
-        'Department name already exists in one of the selected branches',
-      );
+    if (existing.length > 0) {
+    const names = existing.map((d) => d.dept_name).join(', ');
+    throw new BadRequestException(
+      `Departments ${names} already exist in selected branches!`,
+    );
     }
 
-    await this.prisma.department.create({
-      data: {
-        dept_name: dto.dept_name,
-        branches: {
-          connect: branchIds.map((id) => ({ id })),
+    // Create multiple departments (transaction)
+  await this.prisma.$transaction(
+    uniqueDepartments.map((name) =>
+      this.prisma.department.create({
+        data: {
+          dept_name: name,
+          branches: {
+            connect: branchIds.map((id) => ({ id })),
+          },
         },
-      },
-    });
+      }),
+    ),
+  );
 
     return {
       success: true,
@@ -117,6 +130,7 @@ export class DepartmentService {
      Reusable branch resolver
   */
     const branchIds = await this.userHelper.userBranchIs(user, branchId);
+  
 
     if (branchIds.length === 0) {
       return {
@@ -171,6 +185,8 @@ export class DepartmentService {
       }),
     ]);
 
+  
+
     const totalPages = Math.ceil(totalCount / limit);
 
     return {
@@ -192,6 +208,10 @@ export class DepartmentService {
     userId: number,
   ): Promise<SuccessResponseDto> {
     await this.userHelper.getUserOrThrow(userId);
+
+    if(!departmentId) {
+      throw new BadRequestException('departmentId is required');
+    }
 
     const department = await this.prisma.department.findUnique({
       where: { id: departmentId },

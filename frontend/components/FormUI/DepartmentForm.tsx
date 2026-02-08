@@ -1,17 +1,15 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FormButtons from "../UI/FormButtons";
 import * as yup from "yup";
 import MultiTagInput from "../UI/MultiTagInput";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import BranchSelectWrapper from "../wrapper/BranchSelectWrapper";
+import { DepartmentFormValues } from "@/types/department.types";
 
-type FormValues = {
-  branchIds: number[];
-  departments: string[];
-};
+
 
 const schema = yup.object({
   branchIds: yup
@@ -28,44 +26,55 @@ const schema = yup.object({
 });
 
 type Props = {
-  onSubmit: (data: FormValues) => void;
+  onSubmit: (data: DepartmentFormValues) => void;
   onCancel: () => void;
   isSubmitting?: boolean;
-  initialData?: Partial<FormValues>;
+  isOpen?: boolean;
+  initialData?: Partial<DepartmentFormValues>;
 };
 
 const DepartmentForm: React.FC<Props> = ({
   onSubmit,
   onCancel,
+  isOpen,
   isSubmitting = false,
   initialData = {},
 }) => {
 
   const {
     handleSubmit,
-    setValue,
+    reset,
     control,
     formState: { errors, isValid },
-  } = useForm<FormValues>({
+  } = useForm<DepartmentFormValues>({
     resolver: yupResolver(schema) as any,
     mode: "onChange",
-    defaultValues: {
-      branchIds: initialData.branchIds ?? [],
-      departments: initialData.departments ?? [],
-    },
+  defaultValues: {
+    branchIds: [],
+    departments: [],
+  },
   });
 
   //     React.useEffect(() => {
   //   if (initialData) {
   //     Object.entries(initialData).forEach(([key, value]) => {
-  //       setValue(key as keyof FormValues, value as any);
+  //       setValue(key as keyof DepartmentFormValues, value as any);
   //     });
   //   }
   // }, [initialData]);
 
+useEffect(() => {
+  if (!isOpen) return;
+
+  reset({
+    branchIds: initialData?.branchIds ?? [],
+    departments: initialData?.departments ?? [],
+  });
+}, [isOpen]);
+
   
 
-  const submit: SubmitHandler<FormValues> = (data) => {
+  const submit: SubmitHandler<DepartmentFormValues> = (data) => {
     onSubmit(data);
   };
 

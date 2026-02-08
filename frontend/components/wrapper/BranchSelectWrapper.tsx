@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUserBranch } from "@/service/API/orgnization.api";
 import Dropdown from "../UI/Dropdown";
-
+import { useEffect } from "react";
 
 const BranchSelectWrapper = ({ value, onChange, error }: any) => {
   const { data, isLoading } = useQuery({
@@ -11,13 +11,18 @@ const BranchSelectWrapper = ({ value, onChange, error }: any) => {
     queryFn: getUserBranch,
   });
 
-  const options =
-    data?.data?.map((b: any) => ({
+  const branches = data?.data ?? [];
 
-      
-      label: b.name,
-      value: b.id,
-    })) ?? [];
+  const options = branches.map((b: any) => ({
+    label: b.name,
+    value: b.id,
+  }));
+
+
+
+  if (isLoading) return null;
+
+  if (branches.length <= 1) return null;
 
   return (
     <Dropdown
@@ -27,7 +32,7 @@ const BranchSelectWrapper = ({ value, onChange, error }: any) => {
       onChange={onChange}
       loading={isLoading}
       error={error}
-      multiple= {true}
+      multiple={true}
     />
   );
 };

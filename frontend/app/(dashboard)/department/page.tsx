@@ -8,14 +8,20 @@ import { Organization } from "@/types/organization.types";
 import { formatDate } from "@/helper/date";
 import { useTableQueryParams } from "@/hooks/useTablequeryParams";
 import { useDebounce } from "@/hooks/useDebounce";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import DepartmentForm from "@/components/FormUI/DepartmentForm";
 import { FaPeopleGroup } from "react-icons/fa6";
 import ConfirmAlert from "@/components/UI/ConfirmAlert";
-import { createDepartment, deleteDepartment, getDepartments, updateDepartment } from "@/service/API/department.api";
+import {
+  createDepartment,
+  deleteDepartment,
+  getDepartments,
+  updateDepartment,
+} from "@/service/API/department.api";
+import { Department, DepartmentFormValues } from "@/types/department.types";
 
 const DepartmentPage = () => {
   const { page, limit, search, setPage, setLimit, setSearch } =
@@ -24,7 +30,7 @@ const DepartmentPage = () => {
   const debouncedSearch = useDebounce(search, 500);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingOrg, setEditingOrg] = useState<Organization | null>(null);
+  const [editingDept, setEditingDept] = useState<Department | null>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
@@ -39,6 +45,7 @@ const DepartmentPage = () => {
     staleTime: 1000 * 30, // 30s cache
     retry: false,
   });
+  console.log(data, "data coming department");
 
   React.useEffect(() => {
     if (error) {
@@ -53,19 +60,19 @@ const DepartmentPage = () => {
 
   const columns = [
     { key: "no", label: "No." },
-    { key: "department", label: "Department" },
+    { key: "dept_name", label: "Department" },
     {
       key: "createdAt",
       label: "Created At",
-      render: (row: Organization) => formatDate(row.createdAt),
+      render: (row: any) => formatDate(row.createdAt),
     },
     {
       key: "actions",
       label: "Actions",
-      render: (row: Organization) => (
+      render: (row: Department) => (
         <EditDeleteIcon
           onEdit={() => {
-            setEditingOrg(row);
+            setEditingDept(row);
             setIsModalOpen(true);
           }}
           onDelete={() => {
@@ -76,6 +83,21 @@ const DepartmentPage = () => {
       ),
     },
   ];
+
+
+    const memoInitialData = React.useMemo(() => {
+  if (!editingDept) return undefined;
+
+  return {
+    branchIds: editingDept.branches?.map(b => b.id) ?? [],
+   
+    departments: [editingDept.dept_name],
+  };
+
+}, [editingDept]);
+
+
+
 
   //create branch mutation
   const addMutation = useMutation({
@@ -102,7 +124,7 @@ const DepartmentPage = () => {
     onSuccess: () => {
       toast.success("Department updated successfully");
       setIsModalOpen(false);
-      setEditingOrg(null);
+      setEditingDept(null);
 
       queryClient.invalidateQueries({
         queryKey: ["departments"],
@@ -133,13 +155,14 @@ const DepartmentPage = () => {
     },
   });
 
-  const handleSubmitDepartment = (formData: any) => {
-    if (editingOrg) {
+  const handleSubmitDepartment = (formData: DepartmentFormValues) => {
+    if (editingDept) {
       updateMutation.mutate({
-        id: editingOrg.id, // or id depending backend
+        id: editingDept.id, // or id depending backend
         data: formData,
       });
     } else {
+      console.log(formData, "form subitted");
       addMutation.mutate(formData);
     }
   };
@@ -147,7 +170,7 @@ const DepartmentPage = () => {
   const handleCancel = () => {
     if (!addMutation.isPending) {
       setIsModalOpen(false);
-      setEditingOrg(null);
+      setEditingDept(null);
     }
   };
 
@@ -156,6 +179,8 @@ const DepartmentPage = () => {
     no: (page - 1) * limit + index + 1,
   }));
 
+  console.log(tableData, "table data"); 
+
   return (
     <div className="p-2">
       <div className="flex items-start justify-between">
@@ -163,7 +188,7 @@ const DepartmentPage = () => {
 
         <AddButton
           onClick={() => {
-            setEditingOrg(null);
+            setEditingDept(null);
             setIsModalOpen(true);
           }}
           logo={<FaPeopleGroup size={30} />}
@@ -191,14 +216,15 @@ const DepartmentPage = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={handleCancel}
-        title={editingOrg ? "Update Department" : "Add Department"}
+        title={editingDept ? "Update Department" : "Add Department"}
         size="lg"
       >
         <DepartmentForm
+          isOpen={isModalOpen}
           onSubmit={handleSubmitDepartment}
           onCancel={handleCancel}
           isSubmitting={addMutation.isPending || updateMutation.isPending}
-          // initialData={editingOrg ?? undefined}
+          initialData={memoInitialData}
         />
       </Modal>
 

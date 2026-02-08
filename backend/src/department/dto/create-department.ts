@@ -4,9 +4,9 @@ import { Type } from "class-transformer";
 
 export class CreateDepartmentDto {
   @ApiProperty({ example: 'IT' })
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  dept_name: string;
+  departments: string[]
 
   @ApiProperty({ 
     example: [1, 2, 3], 
