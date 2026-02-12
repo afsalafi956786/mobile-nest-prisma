@@ -43,6 +43,7 @@ model Branch {
   users User[] @relation("BranchUsers")
 
   departments Department[] @relation("DepartmentBranches")
+  positions   Position[]   @relation("PositionBranches")
 
   name    String  @unique
   email   String
@@ -64,8 +65,27 @@ model Department {
   // Many-to-many relation with Branch
   branches Branch[] @relation("DepartmentBranches")
 
+  //one to many relation
+  positions Position[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("departments")
+}
+
+model Position {
+  id Int @id @default(autoincrement())
+
+  pos_name String @unique
+
+  branches Branch[] @relation("PositionBranches")
+
+  departmentId Int
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("positions")
 }

@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { BranchModule } from './branch/branch.module';
 import { UploadModule } from './upload/upload.module';
 import { DepartmentModule } from './department/department.module';
+import { PositionModule } from './position/position.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { DepartmentModule } from './department/department.module';
     BranchModule,
     UploadModule,
     DepartmentModule,
+    PositionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

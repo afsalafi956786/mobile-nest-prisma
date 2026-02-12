@@ -30,9 +30,6 @@ export class DepartmentService {
 
     let branchIds: number[] = [];
 
-    console.log(dto.branchIds, 'branch ids');
-    console.log(dto.departments,'departments');
-    console.log(dto,'dtop')
 
     //  If branchIds provided → validate & use
     if (dto.branchIds && dto.branchIds.length > 0) {

@@ -13,7 +13,7 @@ type Props = {
   label?: string;
   options: Option[];
   value: any;
-  onChange: (val: any) => void; //  fixed type
+  onChange: (val: any) => void;
   placeholder?: string;
   error?: string;
   loading?: boolean;
@@ -36,30 +36,29 @@ const Dropdown: React.FC<Props> = ({
   /* ---------------- FILTER ---------------- */
   const filtered = useMemo(() => {
     return options.filter((o) =>
-      o.label.toLowerCase().includes(search.toLowerCase()),
-
+      o.label.toLowerCase().includes(search.toLowerCase())
     );
   }, [search, options]);
 
   /* ---------------- SELECT ---------------- */
-const handleSelect = (val: any) => {
-  const parsed = Number(val);
+  const handleSelect = (val: any) => {
+    const parsed = Number(val);
 
-  if (multiple) {
-    const arr = Array.isArray(value) ? value : [];
+    if (multiple) {
+      const arr = Array.isArray(value) ? value : [];
 
-    if (arr.includes(parsed)) {
-      setOpen(false);
-      return;
+      if (arr.includes(parsed)) {
+        setOpen(false);
+        return;
+      }
+
+      onChange([...arr, parsed]);
+    } else {
+      onChange(parsed);
     }
 
-    onChange([...arr, parsed]);
-  } else {
-    onChange(parsed);
-  }
-
-  setOpen(false);
-};
+    setOpen(false);
+  };
 
   /* ---------------- REMOVE (multi only) ---------------- */
   const remove = (val: any) => {
@@ -72,69 +71,93 @@ const handleSelect = (val: any) => {
   /* ---------------- SELECTED ---------------- */
   const selectedOptions = multiple
     ? options.filter((o) =>
-        Array.isArray(value) ? value.includes(o.value) : false,
+        Array.isArray(value) ? value.includes(o.value) : false
       )
     : options.filter((o) => o.value === value);
 
   /* ---------------- RENDER ---------------- */
   return (
     <div className="relative w-full space-y-1">
-      {label && multiple &&( <label className="font-medium">{label}</label> )}
+      {label && multiple && <label className="font-medium">{label}</label>}
 
       {/* Input container */}
       <div
         onClick={() => setOpen((p) => !p)}
-        className={`border rounded-lg p-2 flex flex-wrap gap-2 min-h-[44px] cursor-pointer  ${
+        className={`border rounded-lg p-2 flex flex-wrap gap-2 min-h-[44px] cursor-pointer ${
           error ? "border-red-500" : ""
         }`}
       >
-        {/* MULTI SELECT TAGS */}
+        {/* ================= MULTI ================= */}
         {multiple ? (
-          selectedOptions.length ? (
-            selectedOptions.map((o) => (
-              <span
-                key={o.value}
-                className="flex items-center gap-1 bg-main-primary/80 text-secondary px-2 py-1 rounded text-xs"
-              >
-                {o.label}
+          <>
+            {selectedOptions.length ? (
+              selectedOptions.map((o) => (
+                <span
+                  key={o.value}
+                  className="flex items-center gap-1 bg-main-primary/80 text-secondary px-2 py-1 rounded text-xs"
+                >
+                  {o.label}
 
+                  <FaTimes
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      remove(o.value);
+                    }}
+                  />
+                </span>
+              ))
+            ) : (
+              <span className="text-gray-400 text-sm">{placeholder}</span>
+            )}
+
+            <ChevronDown
+              size={18}
+              className={`ml-auto mt-1 transition ${open ? "rotate-180" : ""}`}
+            />
+          </>
+        ) : (
+          /* ================= SINGLE (FIXED CLEAR ICON) ================= */
+          <div className="flex items-center w-full">
+            <span className="text-sm flex-1">
+              {selectedOptions[0]?.label || placeholder}
+            </span>
+
+            {/* right side icons together */}
+            <div className="flex items-center gap-2">
+              {value !== null && value !== undefined && value !== "" && (
                 <FaTimes
-                  className="cursor-pointer"
+                  className="text-gray-400 hover:text-red-500 cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    remove(o.value);
+                    onChange(null); // refetch works
                   }}
                 />
-              </span>
-            ))
-          ) : (
-            <span className="text-gray-400 text-sm">{placeholder}</span>
-          )
-        ) : (
-          <span className="text-sm">
-            {selectedOptions[0]?.label || placeholder}
-          </span>
-        )}
+              )}
 
-        <ChevronDown
-          size={18}
-          className={`ml-auto mt-1 transition ${open ? "rotate-180" : ""}`}
-        />
+              <ChevronDown
+                size={18}
+                className={`transition ${open ? "rotate-180" : ""}`}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Dropdown list */}
       {open && (
-        <div className="absolute z-50  w-full mt-1 border rounded-lg shadow-lg bg-table-heding-color max-h-56 overflow-auto">
-          <div className="w-full  px-2 py-1">
-            <div className=" rounded-lg  mt-2 border border-border ">
+        <div className="absolute z-50 w-full mt-1 border rounded-lg shadow-lg bg-table-heding-color max-h-56 overflow-auto">
+          <div className="w-full px-2 py-1">
+            <div className="rounded-lg mt-2 border border-border">
               <input
                 placeholder="Search..."
-                className="w-full p-2  outline-none text-sm"
+                className="w-full p-2 outline-none text-sm"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
           </div>
+
           {loading && <div className="loader-small"></div>}
 
           {!loading && filtered.length === 0 && (
