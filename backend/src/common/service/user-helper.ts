@@ -51,6 +51,55 @@ export class UserHelper {
   }
 
 
+async resolveBranchId(
+  user: User,
+  branchId?: number,
+): Promise<number> {
+
+  // If branchId provided → validate
+  if (branchId) {
+    const branch = await this.prisma.branch.findUnique({
+      where: { id: branchId },
+    });
+
+    if (!branch) {
+      throw new BadRequestException('Invalid branchId provided');
+    }
+
+    return branchId;
+  }
+
+  // Auto assign
+  if (user.role === Role.Admin) {
+    const branch = await this.prisma.branch.findFirst({
+      where: { adminId: user.id },
+      select: { id: true },
+    });
+
+    if (!branch) {
+      throw new BadRequestException('Admin has no branch');
+    }
+
+    return branch.id;
+  }
+
+  if (user.role === Role.user) {
+    if (!user.branchId) {
+      throw new BadRequestException(
+        'User is not assigned to any branch',
+      );
+    }
+
+    return user.branchId;
+  }
+
+  throw new BadRequestException('Branch not available');
+}
+
+
+
+
+
   
 
 

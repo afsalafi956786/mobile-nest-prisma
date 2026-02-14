@@ -43,7 +43,7 @@ model Branch {
   users User[] @relation("BranchUsers")
 
   departments Department[] @relation("DepartmentBranches")
-  positions   Position[]   @relation("PositionBranches")
+  positions   Position[]
 
   name    String  @unique
   email   String
@@ -77,9 +77,10 @@ model Department {
 model Position {
   id Int @id @default(autoincrement())
 
-  pos_name String @unique
+  pos_name String
 
-  branches Branch[] @relation("PositionBranches")
+  branchId Int
+  branch   Branch @relation(fields: [branchId], references: [id])
 
   departmentId Int
   department   Department @relation(fields: [departmentId], references: [id])

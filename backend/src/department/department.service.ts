@@ -30,7 +30,6 @@ export class DepartmentService {
 
     let branchIds: number[] = [];
 
-
     //  If branchIds provided → validate & use
     if (dto.branchIds && dto.branchIds.length > 0) {
       const count = await this.prisma.branch.count({
@@ -66,12 +65,12 @@ export class DepartmentService {
       throw new BadRequestException('No branches available to assign');
     }
 
-     const uniqueDepartments = [...new Set(dto.departments)];
+    const uniqueDepartments = [...new Set(dto.departments)];
 
     // check duplicate department inside same branches
     const existing = await this.prisma.department.findMany({
       where: {
-        dept_name:  { in: uniqueDepartments },
+        dept_name: { in: uniqueDepartments },
         branches: {
           some: {
             id: { in: branchIds },
@@ -82,25 +81,25 @@ export class DepartmentService {
     });
 
     if (existing.length > 0) {
-    const names = existing.map((d) => d.dept_name).join(', ');
-    throw new BadRequestException(
-      `Departments ${names} already exist in selected branches!`,
-    );
+      const names = existing.map((d) => d.dept_name).join(', ');
+      throw new BadRequestException(
+        `Departments ${names} already exist in selected branches!`,
+      );
     }
 
     // Create multiple departments (transaction)
-  await this.prisma.$transaction(
-    uniqueDepartments.map((name) =>
-      this.prisma.department.create({
-        data: {
-          dept_name: name,
-          branches: {
-            connect: branchIds.map((id) => ({ id })),
+    await this.prisma.$transaction(
+      uniqueDepartments.map((name) =>
+        this.prisma.department.create({
+          data: {
+            dept_name: name,
+            branches: {
+              connect: branchIds.map((id) => ({ id })),
+            },
           },
-        },
-      }),
-    ),
-  );
+        }),
+      ),
+    );
 
     return {
       success: true,
@@ -127,7 +126,6 @@ export class DepartmentService {
      Reusable branch resolver
   */
     const branchIds = await this.userHelper.userBranchIs(user, branchId);
-  
 
     if (branchIds.length === 0) {
       return {
@@ -182,8 +180,6 @@ export class DepartmentService {
       }),
     ]);
 
-  
-
     const totalPages = Math.ceil(totalCount / limit);
 
     return {
@@ -206,7 +202,7 @@ export class DepartmentService {
   ): Promise<SuccessResponseDto> {
     await this.userHelper.getUserOrThrow(userId);
 
-    if(!departmentId) {
+    if (!departmentId) {
       throw new BadRequestException('departmentId is required');
     }
 
@@ -271,7 +267,6 @@ export class DepartmentService {
     };
   }
 
-
   async deleteDepartment(
     userId: number,
     departmentId: number,
@@ -286,6 +281,35 @@ export class DepartmentService {
       success: true,
       message: 'Branch deleted successfully',
       statusCode: HttpStatus.OK,
+    };
+  }
+
+  async getDepartemntsList(
+    userId: number,
+    branchId?: number,
+  ): Promise<successFetchReponseDto> {
+    const user = await this.userHelper.getUserOrThrow(userId);
+
+    const resolveBranchId = await this.userHelper.resolveBranchId(
+      user,
+      branchId,
+    );
+
+    const departments = await this.prisma.department.findMany({
+      where: {
+        branches: { some: { id: resolveBranchId } },
+      },
+      select: {
+        id: true,
+        dept_name: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return {
+      success: true,
+      statusCode: HttpStatus.OK,
+      data: departments,
     };
   }
 }

@@ -1,11 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsArray, ArrayMinSize, IsInt, IsOptional, IsNumber } from "class-validator";
+import { IsNotEmpty, IsArray, IsOptional, IsNumber, IsString } from "class-validator";
 
-export class CreatePositionDto {
+export class UpdatePositionDto {
   @ApiProperty({ example: 'Software engineer' })
-  @IsArray()
+  @IsString()
   @IsNotEmpty()
-  positions: string[]
+  pos_name: string
 
 
   @ApiProperty({example : 'IT'})

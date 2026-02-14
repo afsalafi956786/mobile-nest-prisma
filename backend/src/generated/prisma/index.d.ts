@@ -1268,37 +1268,6 @@ export namespace Prisma {
 
 
   /**
-   * Count Type PositionCountOutputType
-   */
-
-  export type PositionCountOutputType = {
-    branches: number
-  }
-
-  export type PositionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    branches?: boolean | PositionCountOutputTypeCountBranchesArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * PositionCountOutputType without action
-   */
-  export type PositionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PositionCountOutputType
-     */
-    select?: PositionCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * PositionCountOutputType without action
-   */
-  export type PositionCountOutputTypeCountBranchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BranchWhereInput
-  }
-
-
-  /**
    * Models
    */
 
@@ -4879,17 +4848,20 @@ export namespace Prisma {
 
   export type PositionAvgAggregateOutputType = {
     id: number | null
+    branchId: number | null
     departmentId: number | null
   }
 
   export type PositionSumAggregateOutputType = {
     id: number | null
+    branchId: number | null
     departmentId: number | null
   }
 
   export type PositionMinAggregateOutputType = {
     id: number | null
     pos_name: string | null
+    branchId: number | null
     departmentId: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4898,6 +4870,7 @@ export namespace Prisma {
   export type PositionMaxAggregateOutputType = {
     id: number | null
     pos_name: string | null
+    branchId: number | null
     departmentId: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4906,6 +4879,7 @@ export namespace Prisma {
   export type PositionCountAggregateOutputType = {
     id: number
     pos_name: number
+    branchId: number
     departmentId: number
     createdAt: number
     updatedAt: number
@@ -4915,17 +4889,20 @@ export namespace Prisma {
 
   export type PositionAvgAggregateInputType = {
     id?: true
+    branchId?: true
     departmentId?: true
   }
 
   export type PositionSumAggregateInputType = {
     id?: true
+    branchId?: true
     departmentId?: true
   }
 
   export type PositionMinAggregateInputType = {
     id?: true
     pos_name?: true
+    branchId?: true
     departmentId?: true
     createdAt?: true
     updatedAt?: true
@@ -4934,6 +4911,7 @@ export namespace Prisma {
   export type PositionMaxAggregateInputType = {
     id?: true
     pos_name?: true
+    branchId?: true
     departmentId?: true
     createdAt?: true
     updatedAt?: true
@@ -4942,6 +4920,7 @@ export namespace Prisma {
   export type PositionCountAggregateInputType = {
     id?: true
     pos_name?: true
+    branchId?: true
     departmentId?: true
     createdAt?: true
     updatedAt?: true
@@ -5037,6 +5016,7 @@ export namespace Prisma {
   export type PositionGroupByOutputType = {
     id: number
     pos_name: string
+    branchId: number
     departmentId: number
     createdAt: Date
     updatedAt: Date
@@ -5064,62 +5044,69 @@ export namespace Prisma {
   export type PositionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     pos_name?: boolean
+    branchId?: boolean
     departmentId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    branches?: boolean | Position$branchesArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
     department?: boolean | DepartmentDefaultArgs<ExtArgs>
-    _count?: boolean | PositionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["position"]>
 
   export type PositionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     pos_name?: boolean
+    branchId?: boolean
     departmentId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
     department?: boolean | DepartmentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["position"]>
 
   export type PositionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     pos_name?: boolean
+    branchId?: boolean
     departmentId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
     department?: boolean | DepartmentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["position"]>
 
   export type PositionSelectScalar = {
     id?: boolean
     pos_name?: boolean
+    branchId?: boolean
     departmentId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PositionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pos_name" | "departmentId" | "createdAt" | "updatedAt", ExtArgs["result"]["position"]>
+  export type PositionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pos_name" | "branchId" | "departmentId" | "createdAt" | "updatedAt", ExtArgs["result"]["position"]>
   export type PositionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    branches?: boolean | Position$branchesArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
     department?: boolean | DepartmentDefaultArgs<ExtArgs>
-    _count?: boolean | PositionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PositionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
     department?: boolean | DepartmentDefaultArgs<ExtArgs>
   }
   export type PositionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
     department?: boolean | DepartmentDefaultArgs<ExtArgs>
   }
 
   export type $PositionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Position"
     objects: {
-      branches: Prisma.$BranchPayload<ExtArgs>[]
+      branch: Prisma.$BranchPayload<ExtArgs>
       department: Prisma.$DepartmentPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       pos_name: string
+      branchId: number
       departmentId: number
       createdAt: Date
       updatedAt: Date
@@ -5517,7 +5504,7 @@ export namespace Prisma {
    */
   export interface Prisma__PositionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    branches<T extends Position$branchesArgs<ExtArgs> = {}>(args?: Subset<T, Position$branchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     department<T extends DepartmentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DepartmentDefaultArgs<ExtArgs>>): Prisma__DepartmentClient<$Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5550,6 +5537,7 @@ export namespace Prisma {
   interface PositionFieldRefs {
     readonly id: FieldRef<"Position", 'Int'>
     readonly pos_name: FieldRef<"Position", 'String'>
+    readonly branchId: FieldRef<"Position", 'Int'>
     readonly departmentId: FieldRef<"Position", 'Int'>
     readonly createdAt: FieldRef<"Position", 'DateTime'>
     readonly updatedAt: FieldRef<"Position", 'DateTime'>
@@ -5949,30 +5937,6 @@ export namespace Prisma {
   }
 
   /**
-   * Position.branches
-   */
-  export type Position$branchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Branch
-     */
-    select?: BranchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Branch
-     */
-    omit?: BranchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInclude<ExtArgs> | null
-    where?: BranchWhereInput
-    orderBy?: BranchOrderByWithRelationInput | BranchOrderByWithRelationInput[]
-    cursor?: BranchWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: BranchScalarFieldEnum | BranchScalarFieldEnum[]
-  }
-
-  /**
    * Position without action
    */
   export type PositionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6049,6 +6013,7 @@ export namespace Prisma {
   export const PositionScalarFieldEnum: {
     id: 'id',
     pos_name: 'pos_name',
+    branchId: 'branchId',
     departmentId: 'departmentId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -6391,39 +6356,43 @@ export namespace Prisma {
     NOT?: PositionWhereInput | PositionWhereInput[]
     id?: IntFilter<"Position"> | number
     pos_name?: StringFilter<"Position"> | string
+    branchId?: IntFilter<"Position"> | number
     departmentId?: IntFilter<"Position"> | number
     createdAt?: DateTimeFilter<"Position"> | Date | string
     updatedAt?: DateTimeFilter<"Position"> | Date | string
-    branches?: BranchListRelationFilter
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     department?: XOR<DepartmentScalarRelationFilter, DepartmentWhereInput>
   }
 
   export type PositionOrderByWithRelationInput = {
     id?: SortOrder
     pos_name?: SortOrder
+    branchId?: SortOrder
     departmentId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    branches?: BranchOrderByRelationAggregateInput
+    branch?: BranchOrderByWithRelationInput
     department?: DepartmentOrderByWithRelationInput
   }
 
   export type PositionWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    pos_name?: string
     AND?: PositionWhereInput | PositionWhereInput[]
     OR?: PositionWhereInput[]
     NOT?: PositionWhereInput | PositionWhereInput[]
+    pos_name?: StringFilter<"Position"> | string
+    branchId?: IntFilter<"Position"> | number
     departmentId?: IntFilter<"Position"> | number
     createdAt?: DateTimeFilter<"Position"> | Date | string
     updatedAt?: DateTimeFilter<"Position"> | Date | string
-    branches?: BranchListRelationFilter
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     department?: XOR<DepartmentScalarRelationFilter, DepartmentWhereInput>
-  }, "id" | "pos_name">
+  }, "id">
 
   export type PositionOrderByWithAggregationInput = {
     id?: SortOrder
     pos_name?: SortOrder
+    branchId?: SortOrder
     departmentId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -6440,6 +6409,7 @@ export namespace Prisma {
     NOT?: PositionScalarWhereWithAggregatesInput | PositionScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Position"> | number
     pos_name?: StringWithAggregatesFilter<"Position"> | string
+    branchId?: IntWithAggregatesFilter<"Position"> | number
     departmentId?: IntWithAggregatesFilter<"Position"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Position"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Position"> | Date | string
@@ -6535,7 +6505,7 @@ export namespace Prisma {
     admin: UserCreateNestedOneWithoutAdminOfInput
     users?: UserCreateNestedManyWithoutBranchInput
     departments?: DepartmentCreateNestedManyWithoutBranchesInput
-    positions?: PositionCreateNestedManyWithoutBranchesInput
+    positions?: PositionCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateInput = {
@@ -6552,7 +6522,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutBranchInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutBranchesInput
-    positions?: PositionUncheckedCreateNestedManyWithoutBranchesInput
+    positions?: PositionUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUpdateInput = {
@@ -6568,7 +6538,7 @@ export namespace Prisma {
     admin?: UserUpdateOneRequiredWithoutAdminOfNestedInput
     users?: UserUpdateManyWithoutBranchNestedInput
     departments?: DepartmentUpdateManyWithoutBranchesNestedInput
-    positions?: PositionUpdateManyWithoutBranchesNestedInput
+    positions?: PositionUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateInput = {
@@ -6585,7 +6555,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutBranchNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutBranchesNestedInput
-    positions?: PositionUncheckedUpdateManyWithoutBranchesNestedInput
+    positions?: PositionUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateManyInput = {
@@ -6686,39 +6656,40 @@ export namespace Prisma {
     pos_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    branches?: BranchCreateNestedManyWithoutPositionsInput
+    branch: BranchCreateNestedOneWithoutPositionsInput
     department: DepartmentCreateNestedOneWithoutPositionsInput
   }
 
   export type PositionUncheckedCreateInput = {
     id?: number
     pos_name: string
+    branchId: number
     departmentId: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    branches?: BranchUncheckedCreateNestedManyWithoutPositionsInput
   }
 
   export type PositionUpdateInput = {
     pos_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branches?: BranchUpdateManyWithoutPositionsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutPositionsNestedInput
     department?: DepartmentUpdateOneRequiredWithoutPositionsNestedInput
   }
 
   export type PositionUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     pos_name?: StringFieldUpdateOperationsInput | string
+    branchId?: IntFieldUpdateOperationsInput | number
     departmentId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branches?: BranchUncheckedUpdateManyWithoutPositionsNestedInput
   }
 
   export type PositionCreateManyInput = {
     id?: number
     pos_name: string
+    branchId: number
     departmentId: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6733,6 +6704,7 @@ export namespace Prisma {
   export type PositionUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     pos_name?: StringFieldUpdateOperationsInput | string
+    branchId?: IntFieldUpdateOperationsInput | number
     departmentId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7079,6 +7051,11 @@ export namespace Prisma {
     id?: SortOrder
   }
 
+  export type BranchScalarRelationFilter = {
+    is?: BranchWhereInput
+    isNot?: BranchWhereInput
+  }
+
   export type DepartmentScalarRelationFilter = {
     is?: DepartmentWhereInput
     isNot?: DepartmentWhereInput
@@ -7087,6 +7064,7 @@ export namespace Prisma {
   export type PositionCountOrderByAggregateInput = {
     id?: SortOrder
     pos_name?: SortOrder
+    branchId?: SortOrder
     departmentId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7094,12 +7072,14 @@ export namespace Prisma {
 
   export type PositionAvgOrderByAggregateInput = {
     id?: SortOrder
+    branchId?: SortOrder
     departmentId?: SortOrder
   }
 
   export type PositionMaxOrderByAggregateInput = {
     id?: SortOrder
     pos_name?: SortOrder
+    branchId?: SortOrder
     departmentId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7108,6 +7088,7 @@ export namespace Prisma {
   export type PositionMinOrderByAggregateInput = {
     id?: SortOrder
     pos_name?: SortOrder
+    branchId?: SortOrder
     departmentId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7115,6 +7096,7 @@ export namespace Prisma {
 
   export type PositionSumOrderByAggregateInput = {
     id?: SortOrder
+    branchId?: SortOrder
     departmentId?: SortOrder
   }
 
@@ -7223,9 +7205,10 @@ export namespace Prisma {
     connect?: DepartmentWhereUniqueInput | DepartmentWhereUniqueInput[]
   }
 
-  export type PositionCreateNestedManyWithoutBranchesInput = {
-    create?: XOR<PositionCreateWithoutBranchesInput, PositionUncheckedCreateWithoutBranchesInput> | PositionCreateWithoutBranchesInput[] | PositionUncheckedCreateWithoutBranchesInput[]
-    connectOrCreate?: PositionCreateOrConnectWithoutBranchesInput | PositionCreateOrConnectWithoutBranchesInput[]
+  export type PositionCreateNestedManyWithoutBranchInput = {
+    create?: XOR<PositionCreateWithoutBranchInput, PositionUncheckedCreateWithoutBranchInput> | PositionCreateWithoutBranchInput[] | PositionUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: PositionCreateOrConnectWithoutBranchInput | PositionCreateOrConnectWithoutBranchInput[]
+    createMany?: PositionCreateManyBranchInputEnvelope
     connect?: PositionWhereUniqueInput | PositionWhereUniqueInput[]
   }
 
@@ -7242,9 +7225,10 @@ export namespace Prisma {
     connect?: DepartmentWhereUniqueInput | DepartmentWhereUniqueInput[]
   }
 
-  export type PositionUncheckedCreateNestedManyWithoutBranchesInput = {
-    create?: XOR<PositionCreateWithoutBranchesInput, PositionUncheckedCreateWithoutBranchesInput> | PositionCreateWithoutBranchesInput[] | PositionUncheckedCreateWithoutBranchesInput[]
-    connectOrCreate?: PositionCreateOrConnectWithoutBranchesInput | PositionCreateOrConnectWithoutBranchesInput[]
+  export type PositionUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<PositionCreateWithoutBranchInput, PositionUncheckedCreateWithoutBranchInput> | PositionCreateWithoutBranchInput[] | PositionUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: PositionCreateOrConnectWithoutBranchInput | PositionCreateOrConnectWithoutBranchInput[]
+    createMany?: PositionCreateManyBranchInputEnvelope
     connect?: PositionWhereUniqueInput | PositionWhereUniqueInput[]
   }
 
@@ -7287,16 +7271,17 @@ export namespace Prisma {
     deleteMany?: DepartmentScalarWhereInput | DepartmentScalarWhereInput[]
   }
 
-  export type PositionUpdateManyWithoutBranchesNestedInput = {
-    create?: XOR<PositionCreateWithoutBranchesInput, PositionUncheckedCreateWithoutBranchesInput> | PositionCreateWithoutBranchesInput[] | PositionUncheckedCreateWithoutBranchesInput[]
-    connectOrCreate?: PositionCreateOrConnectWithoutBranchesInput | PositionCreateOrConnectWithoutBranchesInput[]
-    upsert?: PositionUpsertWithWhereUniqueWithoutBranchesInput | PositionUpsertWithWhereUniqueWithoutBranchesInput[]
+  export type PositionUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<PositionCreateWithoutBranchInput, PositionUncheckedCreateWithoutBranchInput> | PositionCreateWithoutBranchInput[] | PositionUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: PositionCreateOrConnectWithoutBranchInput | PositionCreateOrConnectWithoutBranchInput[]
+    upsert?: PositionUpsertWithWhereUniqueWithoutBranchInput | PositionUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: PositionCreateManyBranchInputEnvelope
     set?: PositionWhereUniqueInput | PositionWhereUniqueInput[]
     disconnect?: PositionWhereUniqueInput | PositionWhereUniqueInput[]
     delete?: PositionWhereUniqueInput | PositionWhereUniqueInput[]
     connect?: PositionWhereUniqueInput | PositionWhereUniqueInput[]
-    update?: PositionUpdateWithWhereUniqueWithoutBranchesInput | PositionUpdateWithWhereUniqueWithoutBranchesInput[]
-    updateMany?: PositionUpdateManyWithWhereWithoutBranchesInput | PositionUpdateManyWithWhereWithoutBranchesInput[]
+    update?: PositionUpdateWithWhereUniqueWithoutBranchInput | PositionUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: PositionUpdateManyWithWhereWithoutBranchInput | PositionUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: PositionScalarWhereInput | PositionScalarWhereInput[]
   }
 
@@ -7327,16 +7312,17 @@ export namespace Prisma {
     deleteMany?: DepartmentScalarWhereInput | DepartmentScalarWhereInput[]
   }
 
-  export type PositionUncheckedUpdateManyWithoutBranchesNestedInput = {
-    create?: XOR<PositionCreateWithoutBranchesInput, PositionUncheckedCreateWithoutBranchesInput> | PositionCreateWithoutBranchesInput[] | PositionUncheckedCreateWithoutBranchesInput[]
-    connectOrCreate?: PositionCreateOrConnectWithoutBranchesInput | PositionCreateOrConnectWithoutBranchesInput[]
-    upsert?: PositionUpsertWithWhereUniqueWithoutBranchesInput | PositionUpsertWithWhereUniqueWithoutBranchesInput[]
+  export type PositionUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<PositionCreateWithoutBranchInput, PositionUncheckedCreateWithoutBranchInput> | PositionCreateWithoutBranchInput[] | PositionUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: PositionCreateOrConnectWithoutBranchInput | PositionCreateOrConnectWithoutBranchInput[]
+    upsert?: PositionUpsertWithWhereUniqueWithoutBranchInput | PositionUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: PositionCreateManyBranchInputEnvelope
     set?: PositionWhereUniqueInput | PositionWhereUniqueInput[]
     disconnect?: PositionWhereUniqueInput | PositionWhereUniqueInput[]
     delete?: PositionWhereUniqueInput | PositionWhereUniqueInput[]
     connect?: PositionWhereUniqueInput | PositionWhereUniqueInput[]
-    update?: PositionUpdateWithWhereUniqueWithoutBranchesInput | PositionUpdateWithWhereUniqueWithoutBranchesInput[]
-    updateMany?: PositionUpdateManyWithWhereWithoutBranchesInput | PositionUpdateManyWithWhereWithoutBranchesInput[]
+    update?: PositionUpdateWithWhereUniqueWithoutBranchInput | PositionUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: PositionUpdateManyWithWhereWithoutBranchInput | PositionUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: PositionScalarWhereInput | PositionScalarWhereInput[]
   }
 
@@ -7420,10 +7406,10 @@ export namespace Prisma {
     deleteMany?: PositionScalarWhereInput | PositionScalarWhereInput[]
   }
 
-  export type BranchCreateNestedManyWithoutPositionsInput = {
-    create?: XOR<BranchCreateWithoutPositionsInput, BranchUncheckedCreateWithoutPositionsInput> | BranchCreateWithoutPositionsInput[] | BranchUncheckedCreateWithoutPositionsInput[]
-    connectOrCreate?: BranchCreateOrConnectWithoutPositionsInput | BranchCreateOrConnectWithoutPositionsInput[]
-    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+  export type BranchCreateNestedOneWithoutPositionsInput = {
+    create?: XOR<BranchCreateWithoutPositionsInput, BranchUncheckedCreateWithoutPositionsInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutPositionsInput
+    connect?: BranchWhereUniqueInput
   }
 
   export type DepartmentCreateNestedOneWithoutPositionsInput = {
@@ -7432,23 +7418,12 @@ export namespace Prisma {
     connect?: DepartmentWhereUniqueInput
   }
 
-  export type BranchUncheckedCreateNestedManyWithoutPositionsInput = {
-    create?: XOR<BranchCreateWithoutPositionsInput, BranchUncheckedCreateWithoutPositionsInput> | BranchCreateWithoutPositionsInput[] | BranchUncheckedCreateWithoutPositionsInput[]
-    connectOrCreate?: BranchCreateOrConnectWithoutPositionsInput | BranchCreateOrConnectWithoutPositionsInput[]
-    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
-  }
-
-  export type BranchUpdateManyWithoutPositionsNestedInput = {
-    create?: XOR<BranchCreateWithoutPositionsInput, BranchUncheckedCreateWithoutPositionsInput> | BranchCreateWithoutPositionsInput[] | BranchUncheckedCreateWithoutPositionsInput[]
-    connectOrCreate?: BranchCreateOrConnectWithoutPositionsInput | BranchCreateOrConnectWithoutPositionsInput[]
-    upsert?: BranchUpsertWithWhereUniqueWithoutPositionsInput | BranchUpsertWithWhereUniqueWithoutPositionsInput[]
-    set?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
-    disconnect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
-    delete?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
-    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
-    update?: BranchUpdateWithWhereUniqueWithoutPositionsInput | BranchUpdateWithWhereUniqueWithoutPositionsInput[]
-    updateMany?: BranchUpdateManyWithWhereWithoutPositionsInput | BranchUpdateManyWithWhereWithoutPositionsInput[]
-    deleteMany?: BranchScalarWhereInput | BranchScalarWhereInput[]
+  export type BranchUpdateOneRequiredWithoutPositionsNestedInput = {
+    create?: XOR<BranchCreateWithoutPositionsInput, BranchUncheckedCreateWithoutPositionsInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutPositionsInput
+    upsert?: BranchUpsertWithoutPositionsInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutPositionsInput, BranchUpdateWithoutPositionsInput>, BranchUncheckedUpdateWithoutPositionsInput>
   }
 
   export type DepartmentUpdateOneRequiredWithoutPositionsNestedInput = {
@@ -7457,19 +7432,6 @@ export namespace Prisma {
     upsert?: DepartmentUpsertWithoutPositionsInput
     connect?: DepartmentWhereUniqueInput
     update?: XOR<XOR<DepartmentUpdateToOneWithWhereWithoutPositionsInput, DepartmentUpdateWithoutPositionsInput>, DepartmentUncheckedUpdateWithoutPositionsInput>
-  }
-
-  export type BranchUncheckedUpdateManyWithoutPositionsNestedInput = {
-    create?: XOR<BranchCreateWithoutPositionsInput, BranchUncheckedCreateWithoutPositionsInput> | BranchCreateWithoutPositionsInput[] | BranchUncheckedCreateWithoutPositionsInput[]
-    connectOrCreate?: BranchCreateOrConnectWithoutPositionsInput | BranchCreateOrConnectWithoutPositionsInput[]
-    upsert?: BranchUpsertWithWhereUniqueWithoutPositionsInput | BranchUpsertWithWhereUniqueWithoutPositionsInput[]
-    set?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
-    disconnect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
-    delete?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
-    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
-    update?: BranchUpdateWithWhereUniqueWithoutPositionsInput | BranchUpdateWithWhereUniqueWithoutPositionsInput[]
-    updateMany?: BranchUpdateManyWithWhereWithoutPositionsInput | BranchUpdateManyWithWhereWithoutPositionsInput[]
-    deleteMany?: BranchScalarWhereInput | BranchScalarWhereInput[]
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -7664,7 +7626,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     admin: UserCreateNestedOneWithoutAdminOfInput
     departments?: DepartmentCreateNestedManyWithoutBranchesInput
-    positions?: PositionCreateNestedManyWithoutBranchesInput
+    positions?: PositionCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutUsersInput = {
@@ -7680,7 +7642,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     departments?: DepartmentUncheckedCreateNestedManyWithoutBranchesInput
-    positions?: PositionUncheckedCreateNestedManyWithoutBranchesInput
+    positions?: PositionUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutUsersInput = {
@@ -7700,7 +7662,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutBranchInput
     departments?: DepartmentCreateNestedManyWithoutBranchesInput
-    positions?: PositionCreateNestedManyWithoutBranchesInput
+    positions?: PositionCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutAdminInput = {
@@ -7716,7 +7678,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutBranchInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutBranchesInput
-    positions?: PositionUncheckedCreateNestedManyWithoutBranchesInput
+    positions?: PositionUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutAdminInput = {
@@ -7752,7 +7714,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     admin?: UserUpdateOneRequiredWithoutAdminOfNestedInput
     departments?: DepartmentUpdateManyWithoutBranchesNestedInput
-    positions?: PositionUpdateManyWithoutBranchesNestedInput
+    positions?: PositionUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutUsersInput = {
@@ -7768,7 +7730,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departments?: DepartmentUncheckedUpdateManyWithoutBranchesNestedInput
-    positions?: PositionUncheckedUpdateManyWithoutBranchesNestedInput
+    positions?: PositionUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUpsertWithWhereUniqueWithoutAdminInput = {
@@ -7881,14 +7843,14 @@ export namespace Prisma {
     create: XOR<DepartmentCreateWithoutBranchesInput, DepartmentUncheckedCreateWithoutBranchesInput>
   }
 
-  export type PositionCreateWithoutBranchesInput = {
+  export type PositionCreateWithoutBranchInput = {
     pos_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
     department: DepartmentCreateNestedOneWithoutPositionsInput
   }
 
-  export type PositionUncheckedCreateWithoutBranchesInput = {
+  export type PositionUncheckedCreateWithoutBranchInput = {
     id?: number
     pos_name: string
     departmentId: number
@@ -7896,9 +7858,14 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type PositionCreateOrConnectWithoutBranchesInput = {
+  export type PositionCreateOrConnectWithoutBranchInput = {
     where: PositionWhereUniqueInput
-    create: XOR<PositionCreateWithoutBranchesInput, PositionUncheckedCreateWithoutBranchesInput>
+    create: XOR<PositionCreateWithoutBranchInput, PositionUncheckedCreateWithoutBranchInput>
+  }
+
+  export type PositionCreateManyBranchInputEnvelope = {
+    data: PositionCreateManyBranchInput | PositionCreateManyBranchInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutAdminOfInput = {
@@ -7989,20 +7956,20 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Department"> | Date | string
   }
 
-  export type PositionUpsertWithWhereUniqueWithoutBranchesInput = {
+  export type PositionUpsertWithWhereUniqueWithoutBranchInput = {
     where: PositionWhereUniqueInput
-    update: XOR<PositionUpdateWithoutBranchesInput, PositionUncheckedUpdateWithoutBranchesInput>
-    create: XOR<PositionCreateWithoutBranchesInput, PositionUncheckedCreateWithoutBranchesInput>
+    update: XOR<PositionUpdateWithoutBranchInput, PositionUncheckedUpdateWithoutBranchInput>
+    create: XOR<PositionCreateWithoutBranchInput, PositionUncheckedCreateWithoutBranchInput>
   }
 
-  export type PositionUpdateWithWhereUniqueWithoutBranchesInput = {
+  export type PositionUpdateWithWhereUniqueWithoutBranchInput = {
     where: PositionWhereUniqueInput
-    data: XOR<PositionUpdateWithoutBranchesInput, PositionUncheckedUpdateWithoutBranchesInput>
+    data: XOR<PositionUpdateWithoutBranchInput, PositionUncheckedUpdateWithoutBranchInput>
   }
 
-  export type PositionUpdateManyWithWhereWithoutBranchesInput = {
+  export type PositionUpdateManyWithWhereWithoutBranchInput = {
     where: PositionScalarWhereInput
-    data: XOR<PositionUpdateManyMutationInput, PositionUncheckedUpdateManyWithoutBranchesInput>
+    data: XOR<PositionUpdateManyMutationInput, PositionUncheckedUpdateManyWithoutBranchInput>
   }
 
   export type PositionScalarWhereInput = {
@@ -8011,6 +7978,7 @@ export namespace Prisma {
     NOT?: PositionScalarWhereInput | PositionScalarWhereInput[]
     id?: IntFilter<"Position"> | number
     pos_name?: StringFilter<"Position"> | string
+    branchId?: IntFilter<"Position"> | number
     departmentId?: IntFilter<"Position"> | number
     createdAt?: DateTimeFilter<"Position"> | Date | string
     updatedAt?: DateTimeFilter<"Position"> | Date | string
@@ -8028,7 +7996,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     admin: UserCreateNestedOneWithoutAdminOfInput
     users?: UserCreateNestedManyWithoutBranchInput
-    positions?: PositionCreateNestedManyWithoutBranchesInput
+    positions?: PositionCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutDepartmentsInput = {
@@ -8044,7 +8012,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutBranchInput
-    positions?: PositionUncheckedCreateNestedManyWithoutBranchesInput
+    positions?: PositionUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutDepartmentsInput = {
@@ -8056,15 +8024,15 @@ export namespace Prisma {
     pos_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    branches?: BranchCreateNestedManyWithoutPositionsInput
+    branch: BranchCreateNestedOneWithoutPositionsInput
   }
 
   export type PositionUncheckedCreateWithoutDepartmentInput = {
     id?: number
     pos_name: string
+    branchId: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    branches?: BranchUncheckedCreateNestedManyWithoutPositionsInput
   }
 
   export type PositionCreateOrConnectWithoutDepartmentInput = {
@@ -8165,20 +8133,46 @@ export namespace Prisma {
     create: XOR<DepartmentCreateWithoutPositionsInput, DepartmentUncheckedCreateWithoutPositionsInput>
   }
 
-  export type BranchUpsertWithWhereUniqueWithoutPositionsInput = {
-    where: BranchWhereUniqueInput
+  export type BranchUpsertWithoutPositionsInput = {
     update: XOR<BranchUpdateWithoutPositionsInput, BranchUncheckedUpdateWithoutPositionsInput>
     create: XOR<BranchCreateWithoutPositionsInput, BranchUncheckedCreateWithoutPositionsInput>
+    where?: BranchWhereInput
   }
 
-  export type BranchUpdateWithWhereUniqueWithoutPositionsInput = {
-    where: BranchWhereUniqueInput
+  export type BranchUpdateToOneWithWhereWithoutPositionsInput = {
+    where?: BranchWhereInput
     data: XOR<BranchUpdateWithoutPositionsInput, BranchUncheckedUpdateWithoutPositionsInput>
   }
 
-  export type BranchUpdateManyWithWhereWithoutPositionsInput = {
-    where: BranchScalarWhereInput
-    data: XOR<BranchUpdateManyMutationInput, BranchUncheckedUpdateManyWithoutPositionsInput>
+  export type BranchUpdateWithoutPositionsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin?: UserUpdateOneRequiredWithoutAdminOfNestedInput
+    users?: UserUpdateManyWithoutBranchNestedInput
+    departments?: DepartmentUpdateManyWithoutBranchesNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutPositionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    adminId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutBranchNestedInput
+    departments?: DepartmentUncheckedUpdateManyWithoutBranchesNestedInput
   }
 
   export type DepartmentUpsertWithoutPositionsInput = {
@@ -8232,7 +8226,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutBranchNestedInput
     departments?: DepartmentUpdateManyWithoutBranchesNestedInput
-    positions?: PositionUpdateManyWithoutBranchesNestedInput
+    positions?: PositionUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutAdminInput = {
@@ -8248,7 +8242,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutBranchNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutBranchesNestedInput
-    positions?: PositionUncheckedUpdateManyWithoutBranchesNestedInput
+    positions?: PositionUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateManyWithoutAdminInput = {
@@ -8270,6 +8264,14 @@ export namespace Prisma {
     name: string
     password: string
     role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PositionCreateManyBranchInput = {
+    id?: number
+    pos_name: string
+    departmentId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8327,14 +8329,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PositionUpdateWithoutBranchesInput = {
+  export type PositionUpdateWithoutBranchInput = {
     pos_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     department?: DepartmentUpdateOneRequiredWithoutPositionsNestedInput
   }
 
-  export type PositionUncheckedUpdateWithoutBranchesInput = {
+  export type PositionUncheckedUpdateWithoutBranchInput = {
     id?: IntFieldUpdateOperationsInput | number
     pos_name?: StringFieldUpdateOperationsInput | string
     departmentId?: IntFieldUpdateOperationsInput | number
@@ -8342,7 +8344,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PositionUncheckedUpdateManyWithoutBranchesInput = {
+  export type PositionUncheckedUpdateManyWithoutBranchInput = {
     id?: IntFieldUpdateOperationsInput | number
     pos_name?: StringFieldUpdateOperationsInput | string
     departmentId?: IntFieldUpdateOperationsInput | number
@@ -8353,6 +8355,7 @@ export namespace Prisma {
   export type PositionCreateManyDepartmentInput = {
     id?: number
     pos_name: string
+    branchId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8369,7 +8372,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     admin?: UserUpdateOneRequiredWithoutAdminOfNestedInput
     users?: UserUpdateManyWithoutBranchNestedInput
-    positions?: PositionUpdateManyWithoutBranchesNestedInput
+    positions?: PositionUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutDepartmentsInput = {
@@ -8385,7 +8388,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutBranchNestedInput
-    positions?: PositionUncheckedUpdateManyWithoutBranchesNestedInput
+    positions?: PositionUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateManyWithoutDepartmentsInput = {
@@ -8406,65 +8409,21 @@ export namespace Prisma {
     pos_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branches?: BranchUpdateManyWithoutPositionsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutPositionsNestedInput
   }
 
   export type PositionUncheckedUpdateWithoutDepartmentInput = {
     id?: IntFieldUpdateOperationsInput | number
     pos_name?: StringFieldUpdateOperationsInput | string
+    branchId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branches?: BranchUncheckedUpdateManyWithoutPositionsNestedInput
   }
 
   export type PositionUncheckedUpdateManyWithoutDepartmentInput = {
     id?: IntFieldUpdateOperationsInput | number
     pos_name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchUpdateWithoutPositionsInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    contact?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: StringFieldUpdateOperationsInput | string
-    state?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    admin?: UserUpdateOneRequiredWithoutAdminOfNestedInput
-    users?: UserUpdateManyWithoutBranchNestedInput
-    departments?: DepartmentUpdateManyWithoutBranchesNestedInput
-  }
-
-  export type BranchUncheckedUpdateWithoutPositionsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    adminId?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    contact?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: StringFieldUpdateOperationsInput | string
-    state?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    users?: UserUncheckedUpdateManyWithoutBranchNestedInput
-    departments?: DepartmentUncheckedUpdateManyWithoutBranchesNestedInput
-  }
-
-  export type BranchUncheckedUpdateManyWithoutPositionsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    adminId?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    contact?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: StringFieldUpdateOperationsInput | string
-    state?: StringFieldUpdateOperationsInput | string
+    branchId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

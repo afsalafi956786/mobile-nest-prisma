@@ -155,6 +155,7 @@ exports.Prisma.DepartmentScalarFieldEnum = {
 exports.Prisma.PositionScalarFieldEnum = {
   id: 'id',
   pos_name: 'pos_name',
+  branchId: 'branchId',
   departmentId: 'departmentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

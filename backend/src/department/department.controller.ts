@@ -44,6 +44,17 @@ export class DepartmentController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('/list/:branchId')
+  @ApiOperation({ summary: 'Get All Departments without pagination' })
+  async getDepartmentList(
+    @Req() req: AuthRequest,
+    @Param('branchId', OptionalIntPipe) branchId: number,
+  ): Promise<successFetchReponseDto> {
+    const userId = Number(req.user.userId);
+    return this.departmentService.getDepartemntsList(userId, branchId);
+  }
+
+  @UseGuards(AuthGuard)
   @Get()
   @ApiOperation({ summary: 'Get All Departments' })
   async getAll(
@@ -51,7 +62,7 @@ export class DepartmentController {
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
     @Query('search') search?: string,
-    @Query('branchId',OptionalIntPipe) branchId?: number,
+    @Query('branchId', OptionalIntPipe) branchId?: number,
   ): Promise<successFetchReponseDto> {
     const userId = Number(req.user.userId);
     return this.departmentService.getDepartments(
@@ -73,8 +84,8 @@ export class DepartmentController {
     @Body() updateDepartmentDto: UpdateDepartmentDto,
   ): Promise<SuccessResponseDto> {
     const userId = Number(req.user.userId);
-    console.log(departmentId,'dpeart');
-    console.log(updateDepartmentDto,'dpeartde');
+    console.log(departmentId, 'dpeart');
+    console.log(updateDepartmentDto, 'dpeartde');
     return this.departmentService.updateDepartment(
       departmentId,
       updateDepartmentDto,
@@ -93,4 +104,3 @@ export class DepartmentController {
     return this.departmentService.deleteDepartment(userId, departmentId);
   }
 }
-
